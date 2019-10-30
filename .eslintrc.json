@@ -1,0 +1,17 @@
+{
+	"env": {
+		"es6": true,
+		"node": true,
+		"mocha": true
+	},
+	"parserOptions": {
+		"ecmcVersion": 6,
+		"sourceType": "module"
+	},
+	"rules": {
+		"no-console": 0,
+		"comma-dangle": 0,
+		"line-break-style": 0
+	},
+	"extends": "airbnb-base"
+}
