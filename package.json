@@ -1,28 +1,38 @@
 {
-  "name": "teamwork_lite",
-  "version": "1.0.0",
-  "description": "Teamwork is an internal social network for employees of an organisation: It facilitates more interation among colleagues and promote team bonding",
-  "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ucheka22/teamwork_lite.git"
-  },
-  "author": "Ucheka Chike",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ucheka22/teamwork_lite/issues"
-  },
-  "homepage": "https://github.com/ucheka22/teamwork_lite#readme",
-  "devDependencies": {
-    "eslint": "^6.6.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2",
-    "nodemon": "^1.19.4"
-  },
-  "dependencies": {
-    "express": "^4.17.1"
-  }
+	"name": "teamwork_lite",
+	"version": "1.0.0",
+	"description": "Teamwork is an internal social network for employees of an organisation: It facilitates more interation among colleagues and promote team bonding",
+	"main": "app.js",
+	"scripts": {
+		"lint": "eslint */*.js --fix",
+		"dev": "nodemon --exec babel-node ./api/app.js",
+		"clean": "rm -rf src",
+		"build": "npm run clean && babel api --out-dir src"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ucheka22/teamwork_lite.git"
+	},
+	"author": "Ucheka Chike",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/ucheka22/teamwork_lite/issues"
+	},
+	"homepage": "https://github.com/ucheka22/teamwork_lite#readme",
+	"devDependencies": {
+		"@babel/cli": "^7.6.4",
+		"@babel/core": "^7.6.4",
+		"@babel/plugin-transform-runtime": "^7.6.2",
+		"@babel/polyfill": "^7.6.0",
+		"@babel/preset-env": "^7.6.3",
+		"@babel/register": "^7.6.2",
+		"@babel/runtime": "^7.6.3",
+		"eslint": "^6.6.0",
+		"eslint-config-airbnb-base": "^14.0.0",
+		"eslint-plugin-import": "^2.18.2",
+		"nodemon": "^1.19.4"
+	},
+	"dependencies": {
+		"express": "^4.17.1"
+	}
 }
