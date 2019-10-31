@@ -6,8 +6,12 @@
 	"scripts": {
 		"lint": "eslint */*.js --fix",
 		"dev": "nodemon --exec babel-node ./api/app.js",
+		"test": "cross-env NODE_ENV=test npm run migration && cross-env NODE_ENV=test mocha --require @babel/polyfill --require @babel/register test/*.js --no-timeout --exit",
 		"clean": "rm -rf src",
-		"build": "npm run clean && babel api --out-dir src"
+		"build": "npm run clean && babel api --out-dir src",
+		"initial": "babel-node ./api/config/initializeTable.js",
+		"createTables": "babel-node ./api/config/createUserTables.js && babel-node ./api/config/createArticlesTable.js && babel-node ./api/config/createGifsTable.js && babel-node ./api/config/createCommentsTable.js",
+		"migration": "npm run createTables && npm run initial"
 	},
 	"repository": {
 		"type": "git",
@@ -22,6 +26,7 @@
 	"devDependencies": {
 		"@babel/cli": "^7.6.4",
 		"@babel/core": "^7.6.4",
+		"@babel/node": "^7.6.3",
 		"@babel/plugin-transform-runtime": "^7.6.2",
 		"@babel/polyfill": "^7.6.0",
 		"@babel/preset-env": "^7.6.3",
@@ -33,6 +38,12 @@
 		"nodemon": "^1.19.4"
 	},
 	"dependencies": {
-		"express": "^4.17.1"
+		"chai": "^4.2.0",
+		"chai-http": "^4.3.0",
+		"cross-env": "^6.0.3",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"mocha": "^6.2.2",
+		"pg": "^7.12.1"
 	}
 }
