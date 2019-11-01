@@ -28,4 +28,7 @@ createTable(commentsTable);
 queryRunner(createUserQuery.createUser, createUserQuery.userValues);
 queryRunner(createArticleQuery.createArticle, createArticleQuery.articleValues);
 queryRunner(createGifsQuery.createGif, createGifsQuery.gifValues);
-queryRunner(createCommentQuery.createComment, createCommentQuery.commentValues);
+
+setTimeout(() => {
+	queryRunner(createCommentQuery.createComment, createCommentQuery.commentValues);
+}, 1000);
