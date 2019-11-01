@@ -1,6 +1,6 @@
-import pool from './pool';
+import { Comment } from '../objects';
 
-const commentsTable = `DROP TABLE IF EXISTS comments CASCADE;
+export const commentsTable = `DROP TABLE IF EXISTS comments CASCADE;
 CREATE TABLE comments(
     "authourId" INTEGER NOT NULL,
    "articleId" INTEGER NOT NULL,
@@ -13,12 +13,11 @@ CREATE TABLE comments(
     FOREIGN KEY ("gifId") REFERENCES gifs("gifId")
 )
 `;
-async function createCommentsTable() {
-	try {
-		const response = await pool.query(commentsTable);
-		console.log('Comments table table has been created');
-	} catch (error) {
-		console.log(error.stack);
-	}
-}
-createCommentsTable();
+
+const createComment = `INSERT INTO comments("authourId","articleId","gifId",comment) VALUES($1,$2,$3,$4) RETURNING *`;
+const commentValues = [ Comment.authourId, Comment.articleId, Comment.gifId, Comment.comment ];
+
+export const createCommentQuery = {
+	createComment,
+	commentValues
+};

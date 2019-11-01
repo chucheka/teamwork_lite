@@ -9,9 +9,8 @@
 		"test": "cross-env NODE_ENV=test npm run migration && cross-env NODE_ENV=test mocha --require @babel/polyfill --require @babel/register test/*.js --no-timeout --exit",
 		"clean": "rm -rf src",
 		"build": "npm run clean && babel api --out-dir src",
-		"initial": "babel-node ./api/config/initializeTable.js",
-		"createTables": "babel-node ./api/config/createUserTables.js && babel-node ./api/config/createArticlesTable.js && babel-node ./api/config/createGifsTable.js && babel-node ./api/config/createCommentsTable.js",
-		"migration": "npm run createTables && npm run initial"
+		"createTables": "babel-node ./api/models/index.js",
+		"migration": "npm run createTables"
 	},
 	"repository": {
 		"type": "git",
