@@ -4,13 +4,11 @@ import articleRouter from '../api/routes/articles/articles';
 import gifRouter from '../api/routes/gifs/gifs';
 import feedRouter from '../api/routes/feed/feed';
 import dotenv from 'dotenv';
-import pool from './config/pool';
-
 const app = express();
 dotenv.config();
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 const port = 3000;
 
 app.use((req, res, next) => {

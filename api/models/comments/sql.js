@@ -8,9 +8,9 @@ CREATE TABLE comments(
     "commentId" SERIAL PRIMARY KEY NOT NULL,
     "createdOn" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     comment VARCHAR(255) NOT NULL,
-    FOREIGN KEY ("authourId") REFERENCES users("userId"),
-    FOREIGN KEY ("articleId") REFERENCES articles("articleId"),
-    FOREIGN KEY ("gifId") REFERENCES gifs("gifId")
+    FOREIGN KEY ("authourId") REFERENCES users("userId") ON DELETE CASCADE,
+    FOREIGN KEY ("articleId") REFERENCES articles("articleId") ON DELETE CASCADE,
+    FOREIGN KEY ("gifId") REFERENCES gifs("gifId") ON DELETE CASCADE
 )
 `;
 
