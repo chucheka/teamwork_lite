@@ -10,7 +10,7 @@ describe('Auth User', () => {
 	const employeeDetails = {
 		firstName: 'Chike',
 		lastName: 'Ucheka',
-		email: 'ryanucheka@gmail.com',
+		email: 'ryanucheka22@gmail.com',
 		password: 'chike22ucheka',
 		password2: 'chike22ucheka',
 		gender: 'Male',
@@ -24,6 +24,7 @@ describe('Auth User', () => {
 			chai
 				.request(app)
 				.post('/api/v1/auth/create-user')
+				.set('content-type', 'application/json')
 				.send(employeeDetails)
 				.then((res) => {
 					expect(res).to.have.status(201);

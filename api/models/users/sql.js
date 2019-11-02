@@ -5,7 +5,7 @@ CREATE TABLE users(
     "userId" SERIAL PRIMARY KEY NOT NULL,
 	"firstName" VARCHAR(255) NOT NULL,
 	"lastName" VARCHAR(255) NOT NULL,
-	email VARCHAR(255) UNIQUE NOT NULL,
+	email VARCHAR(255) NOT NULL,
 	password VARCHAR(255) NOT NULL,
 	gender VARCHAR(20) NOT NULL,
 	"jobRole" VARCHAR(255) NOT NULL,
@@ -31,4 +31,4 @@ export const createUserQuery = {
 	userValues
 };
 
-export const checkEmail = `SELECT email FROM users WHERE email = $1`;
+export const checkEmail = `SELECT email FROM users WHERE email = $1 `;
