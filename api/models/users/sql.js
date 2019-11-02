@@ -30,3 +30,5 @@ export const createUserQuery = {
 	createUser,
 	userValues
 };
+
+export const checkEmail = `SELECT email FROM users WHERE email = $1`;
