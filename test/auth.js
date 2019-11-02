@@ -5,7 +5,6 @@ import app from '../api/app';
 const { expect } = chai;
 
 chai.use(chaiHttp);
-
 describe('Auth User', () => {
 	const employeeDetails = {
 		firstName: 'Chike',
@@ -19,13 +18,40 @@ describe('Auth User', () => {
 		address: 'Area M World Bank Housing Estate'
 	};
 
-	describe.only('POST /api/v1/auth/create_user', () => {
+	before('Craete user', (done) => {
+		chai
+			.request(app)
+			.post('/api/v1/auth/create-user')
+			.set('content-type', 'application/json')
+			.send(employeeDetails)
+			.then((res) => {
+				console.log(res.body);
+				expect(res).to.have.status(201);
+				done();
+			})
+			.catch((err) => {
+				done(err);
+			});
+	});
+
+	describe('POST /api/v1/auth/create_user', () => {
+		const user = {
+			firstName: 'Chike',
+			lastName: 'Ucheka',
+			email: 'ryanucheka@gmail.com',
+			password: 'chike22ucheka',
+			password2: 'chike22ucheka',
+			gender: 'Male',
+			jobRole: 'Senior Engineer',
+			department: 'IT',
+			address: 'Area M World Bank Housing Estate'
+		};
 		it('Create a new employee account on app', (done) => {
 			chai
 				.request(app)
 				.post('/api/v1/auth/create-user')
 				.set('content-type', 'application/json')
-				.send(employeeDetails)
+				.send(user)
 				.then((res) => {
 					expect(res).to.have.status(201);
 					expect(res.body).to.be.an('object');
@@ -43,7 +69,7 @@ describe('Auth User', () => {
 			chai
 				.request(app)
 				.post('/api/v1/auth/create-user')
-				.send(employeeDetails)
+				.send(user)
 				.then((res) => {
 					expect(res).to.have.status(400);
 					expect(res.body).to.be.an('object');
@@ -56,11 +82,11 @@ describe('Auth User', () => {
 				});
 		});
 		it("Should not create user if password don't match", (done) => {
-			employeeDetails.password = 'chike22';
+			user.password = 'chike22';
 			chai
 				.request(app)
 				.post('/api/v1/auth/create-user')
-				.send(employeeDetails)
+				.send(user)
 				.then((res) => {
 					expect(res).to.have.status(400);
 					expect(res.body).to.be.an('object');
@@ -87,28 +113,30 @@ describe('Auth User', () => {
 					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body.data).to.be.an('object');
-					expect(res.body.data).to.include.all.keys('token', userId);
-					doen();
+					expect(res.body.data).to.include.all.keys('token', 'userId', 'message');
+					done();
 				})
 				.catch((err) => {
 					done(err);
 				});
 		});
-		it('Should not log in user with Invalid email or password', (done) => {
-			employeeDetails.email = 'Invalid email';
-			employeeDetails.password = ' Invalid password';
+		it('Should not log in unregistered user', (done) => {
+			employeeDetails.email = 'notanemployee@gmail.com';
+			employeeDetails.password = 'chdjdjdfhf';
 
-			chai.request(app).post('/api/v1/auth/signin');
-			send({
-				email: employeeDetails.email,
-				password: employeeDetails.password
-			})
+			chai
+				.request(app)
+				.post('/api/v1/auth/signin')
+				.send({
+					email: employeeDetails.email,
+					password: employeeDetails.password
+				})
 				.then((res) => {
 					expect(res).to.have.status(400);
 					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'error');
-					expect(res.body).to.have.property('error', 'Invalid login credentials');
-					doen();
+					expect(res.body).to.have.property('error', 'Invalid credentials');
+					done();
 				})
 				.catch((err) => done(err));
 		});

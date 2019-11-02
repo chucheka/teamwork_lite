@@ -25,10 +25,10 @@ createTable(userTable);
 createTable(articlesTable);
 createTable(gifsTable);
 createTable(commentsTable);
-queryRunner(createUserQuery.createUser, createUserQuery.userValues);
-queryRunner(createArticleQuery.createArticle, createArticleQuery.articleValues);
-queryRunner(createGifsQuery.createGif, createGifsQuery.gifValues);
+// queryRunner(createUserQuery.createUser, createUserQuery.userValues);
+// queryRunner(createArticleQuery.createArticle, createArticleQuery.articleValues);
+// queryRunner(createGifsQuery.createGif, createGifsQuery.gifValues);
 
-setTimeout(() => {
-	queryRunner(createCommentQuery.createComment, createCommentQuery.commentValues);
-}, 1000);
+// setTimeout(() => {
+// 	queryRunner(createCommentQuery.createComment, createCommentQuery.commentValues);
+// }, 1000);
