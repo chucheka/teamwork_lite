@@ -130,13 +130,26 @@ class articlesController {
 	static deleteArticle(req, res, next) {
 		// Get the Id of article in params
 		// Search for it in the database and delete it
+		// Return a 201 response if deleted
+		// and a 404 response if article doesnt exist
 		const articleId = parseInt(req.params.articleId, 10);
 		pool
 			.query(deleteArticleById, [ articleId ])
-			.then((deletedRow) => {
-				res.status(201).json({
-					message: 'deleted'
-				});
+			.then((result) => {
+				if (result.rowCount == 1) {
+					console.log(result.rows[0]);
+					return res.status(201).json({
+						status: 'success',
+						data: {
+							message: 'Article successfully deleted'
+						}
+					});
+				} else {
+					return res.status(404).json({
+						status: 'error',
+						error: 'Article not found'
+					});
+				}
 			})
 			.catch((err) => {
 				console.log(err);
