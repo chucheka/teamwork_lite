@@ -88,7 +88,6 @@ class userController {
 			.query(checkEmail, [ email ])
 			.then((result) => {
 				if (result.rows.length >= 1) {
-					console.log(result.rows);
 					const user = result.rows[0];
 					bcrypt.compare(password, user.password, (err, isMatch) => {
 						if (err) throw err;

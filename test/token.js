@@ -1,0 +1,4 @@
+let token =
+	'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImZpcnN0TmFtZSI6IkNoaWtlIiwibGFzdE5hbWUiOiJVY2hla2EiLCJlbWFpbCI6InRlc3Rpbmd1c2VyQGdtYWlsLmNvbSIsImlhdCI6MTU3MjY5MjU4NywiZXhwIjoxNTczMjk3Mzg3fQ.FpmPDf7aieARD-uYG2eToNCaMA3igOrytrwClFzViQk';
+
+export default token;

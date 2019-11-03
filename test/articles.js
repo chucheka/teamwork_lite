@@ -1,50 +1,50 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../api/app';
-import token from './auth';
+import token from './token';
 const { expect } = chai;
 
 chai.use(chaiHttp);
 
 describe('Articles Endpoints', () => {
 	let articleId;
-	const article = {
+	const articleItem = {
 		title: 'Complete Guide to React',
 		article: 'React hooks enable you use state with functional components'
 	};
 	const Comment = {
 		comment: 'Nice article dear'
 	};
+
 	describe('POST /api/v1/articles', () => {
 		it('Should successfully create an article', (done) => {
 			chai
 				.request(app)
 				.post('/api/v1/articles')
-				.set('Authourization', `Bearer${token}`)
-				.send(article)
+				.set('authorization', token)
+				.send(articleItem)
 				.then((res) => {
 					expect(res).to.have.status(201);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
 					expect(res.body.data).to.include.all.keys('message', 'articleId', 'createdOn', 'title', 'article');
 					expect(res.body.data.message).to.equal('Article successfully posted');
+					done();
 				})
 				.catch((err) => {
 					done(err);
 				});
 		});
 		it('Employee with invalid token cannot post article', (done) => {
-			token = 'thistokenisinvalid';
-
 			chai
 				.request(app)
 				.post('/api/v1/articles')
-				.set('Authourization', `Bearer${token}`)
-				.send(article)
+				.set('authorization', 'invalidtoken')
+				.send(articleItem)
 				.then((res) => {
 					expect(res).to.have.status(403);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'error');
 					expect(res.body).to.have.property('error', 'Invalid token supplied');
 					done();
@@ -56,17 +56,18 @@ describe('Articles Endpoints', () => {
 	});
 	describe('Get /api/articles/:articleId', () => {
 		it('Should be able to get specific article with articleId', (done) => {
+			articleId = 1;
 			chai
 				.request(app)
 				.get(`/api/v1/articles/${articleId}`)
-				.set('Authourization', `Bearer${token}`)
+				.set('authorization', token)
 				.then((res) => {
 					expect(res).to.have.status(200);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
 					expect(res.body.data).to.include.all.keys('id', 'createdOn', 'title', 'article', 'comments');
-					expect(res.body.data.comments).to.be('array');
+					expect(res.body.data.comments).to.be.an('array');
 					expect(res.body.data.comments[0]).to.include.all.keys('commentId', 'comment', 'authourId');
 					done();
 				})
@@ -79,12 +80,12 @@ describe('Articles Endpoints', () => {
 			chai
 				.request(app)
 				.get(`/api/v1/articles/${articleId}`)
-				.set('Authourization', `Bearer${token}`)
+				.set('authorization', token)
 				.then((res) => {
 					expect(res).to.have.status(404);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'error');
-					expect(res.body).to.have.property('error', 'Article not found');
+					expect(res.body).to.have.property('error', ` Article with Id ${articleId} not found`);
 					done();
 				})
 				.catch((err) => {
@@ -94,18 +95,19 @@ describe('Articles Endpoints', () => {
 	});
 	describe('PATCH /api/v1/articles/:articleId', () => {
 		it('Should be able to edit article when logged in', (done) => {
-			article.title = 'Changed the title of article';
+			articleItem.title = 'Changed the title of article';
+			let articleId = 1;
 			chai
 				.request(app)
 				.patch(`/api/v1/articles/${articleId}`)
-				.set('Authourization', `Bearer${token}`)
-				.send(article)
+				.set('authorization', token)
+				.send(articleItem)
 				.then((res) => {
 					expect(res).to.have.status(201);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
-					expect(res.body.data).to.include.all.keys('message', 'title', 'article');
+					expect(res.body.data).to.include.any.keys('message', 'title', 'article');
 					expect(res.body.data.message).to.equal('Article successfully updated');
 					done();
 				})
@@ -118,11 +120,11 @@ describe('Articles Endpoints', () => {
 			chai
 				.request(app)
 				.patch(`/api/v1/articles/${articleId}`)
-				.set('Authourization', `Bearer${token}`)
-				.send(article)
+				.set('authorization', token)
+				.send(articleItem)
 				.then((res) => {
 					expect(res).to.have.status(404);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'error');
 					expect(res.body).to.have.property('error', 'Article not found');
 					done();
@@ -137,10 +139,10 @@ describe('Articles Endpoints', () => {
 			chai
 				.request(app)
 				.delete(`/api/v1/artciles/${articleId}`)
-				.set('Authourization', `Bearer${token}`)
+				.set('authorization', token)
 				.then((res) => {
 					expect(res).to.have.status(201);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body.data).to.have.property('message', 'Article successfully deleted');
 					done();
@@ -154,10 +156,10 @@ describe('Articles Endpoints', () => {
 			chai
 				.request(app)
 				.delete(`/api/v1/artciles/${articleId}`)
-				.set('Authourization', `Bearer${token}`)
+				.set('authorization', token)
 				.then((res) => {
 					expect(res).to.have.status(404);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'error');
 					expect(res.body).to.have.property('error', 'Article not found');
 					done();
@@ -172,11 +174,11 @@ describe('Articles Endpoints', () => {
 			chai
 				.request(app)
 				.post('/api/v1/articles/:articleId/comment')
-				.set('Authourization', `Bearer${token}`)
+				.set('authorization', token)
 				.send(Comment)
 				.then((res) => {
 					expect(res).to.have.status(201);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
 					expect(res.body.data).to.have.property('message', 'Comment successfully created');
@@ -190,6 +192,9 @@ describe('Articles Endpoints', () => {
 					expect(res.body.data.comment).to.be('string');
 					expect(res.body.data.comment).to.equal('Nice article dear');
 					done();
+				})
+				.catch((err) => {
+					done(err);
 				});
 		});
 	});
@@ -199,11 +204,11 @@ describe('Articles Endpoints', () => {
 			chai
 				.request(app)
 				.patch('/api/v1/articles/:articleId/comment')
-				.set('Authourization', `Bearer${token}`)
+				.set('authorization', token)
 				.send(Comment)
 				.then((res) => {
 					expect(res).to.have.status(201);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
 					expect(res.body.data).to.have.property('message', 'Comment successfully editted');
@@ -217,6 +222,9 @@ describe('Articles Endpoints', () => {
 					expect(res.body.data.comment).to.be('string');
 					expect(res.body.data.comment).to.equal('Change my comment message');
 					done();
+				})
+				.catch((err) => {
+					done(err);
 				});
 		});
 	});
@@ -226,10 +234,10 @@ describe('Articles Endpoints', () => {
 				.request(app)
 				.patch(`/api/v1/articles/${articleId}`)
 				.query({ flagged: true })
-				.set('Authourization', `Bearer${token}`)
+				.set('authorization', token)
 				.then((res) => {
 					expect(res).to.have.status(201);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
 					expect(res.body.data).to.have.property('message', 'Article has been flagged as inapropriate');
@@ -246,10 +254,10 @@ describe('Articles Endpoints', () => {
 				.request(app)
 				.delete(`/api/v1/articles/${articleId}`)
 				.query({ flagged: true })
-				.set('Authourization', `Bearer${token}`)
+				.set('authorization', token)
 				.then((res) => {
 					expect(res).to.have.status(201);
-					expect(res.body).to.be('object');
+					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
 					expect(res.body.data).to.have.property('message', 'Article flagged as inapropriate deleted');

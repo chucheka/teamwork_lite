@@ -1,4 +1,5 @@
 // Is empty means any of the following conditions
+
 const isEmpty = (value) => {
 	return (
 		value === undefined ||
