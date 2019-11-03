@@ -1,6 +1,6 @@
 import pool from '../../config/pool';
 import { createArticleQuery, searchArticleById, updateArticleById, deleteArticleById } from '../../models/articles/sql';
-import { commentsByArticleId } from '../../models/comments/sql';
+import { commentsByArticleId, createCommentQuery } from '../../models/comments/sql';
 import validateArticleInput from '../../validator/articles';
 import validateEditArticleInput from '../../validator/editArticle';
 import isEmpty from '../../validator/isEmpty';
@@ -156,9 +156,60 @@ class articlesController {
 			});
 	}
 	static postComment(req, res, next) {
-		res.status(201).json({
-			message: 'Comment posted!!'
-		});
+		// GET article ID from params
+		// Fetch article with the given ID
+		// Use the id to create a comment on comment table
+		// Refactor validate comment inut
+		const articleId = parseInt(req.params.articleId, 10);
+		// Get ID of logged in user that wants to comment on the article
+		const { userId } = req.user;
+		// Search for the article with articleId
+		const comment = req.body.comment;
+		if (isEmpty(comment)) {
+			return res.status(400).json({
+				status: 'error',
+				error: 'comment field cannot be empty'
+			});
+		}
+		if (comment.length > 300) {
+			return res.status(400).json({
+				status: 'error',
+				error: 'comment too lengthy'
+			});
+		}
+		pool
+			.query(searchArticleById, [ articleId ])
+			.then((result) => {
+				if (result.rowCount == 1) {
+					const { createdOn, article, title } = result.rows[0];
+					// Create the comment and attach it to the response body
+					pool
+						.query(createCommentQuery.createComment, [ userId, articleId, , comment ])
+						.then((commentRow) => {
+							if (commentRow.rowCount == 1) {
+								const { comment } = commentRow.rows[0];
+								return res.status(201).json({
+									status: 'success',
+									data: {
+										message: 'Comment successfully created',
+										createdOn: createdOn,
+										articleTitle: title,
+										article: article,
+										comment: comment
+									}
+								});
+							}
+						});
+				} else {
+					return res.status(404).json({
+						status: 'error',
+						error: 'Article not found'
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	}
 }
 

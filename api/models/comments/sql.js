@@ -2,9 +2,9 @@ import { Comment } from '../objects';
 
 export const commentsTable = `DROP TABLE IF EXISTS comments CASCADE;
 CREATE TABLE comments(
-    "authourId" INTEGER NOT NULL,
-   "articleId" INTEGER NOT NULL,
-    "gifId" INTEGER NOT NULL,
+    "authourId" INTEGER NULL,
+   "articleId" INTEGER NULL,
+    "gifId" INTEGER NULL,
     "commentId" SERIAL PRIMARY KEY NOT NULL,
     "createdOn" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     comment VARCHAR(255) NOT NULL,
