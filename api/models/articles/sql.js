@@ -5,7 +5,8 @@ CREATE TABLE articles(
     "articleId" SERIAL PRIMARY KEY NOT NULL,
    "createdOn" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     article VARCHAR(255) NOT NULL,
-    title VARCHAR(255) NOT NULL
+    title VARCHAR(255) NOT NULL,
+    flagged BOOLEAN DEFAULT false
 )
 `;
 
