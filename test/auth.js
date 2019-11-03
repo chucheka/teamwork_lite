@@ -25,7 +25,6 @@ describe('Auth User', () => {
 			.set('content-type', 'application/json')
 			.send(employeeDetails)
 			.then((res) => {
-				console.log(res.body);
 				expect(res).to.have.status(201);
 				done();
 			})

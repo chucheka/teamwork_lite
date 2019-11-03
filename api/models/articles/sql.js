@@ -16,3 +16,9 @@ export const createArticleQuery = {
 	createArticle,
 	articleValues
 };
+
+export const searchArticleById = `SELECT * FROM articles WHERE "articleId" = $1`;
+
+export const updateArticleById = `UPDATE articles SET article = $1,title = $2 WHERE "articleId" = $3 RETURNING *`;
+
+export const deleteArticleById = `DELETE FROM articles WHERE "articleId" = $1 RETURNING *`;

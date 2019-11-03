@@ -21,3 +21,5 @@ export const createCommentQuery = {
 	createComment,
 	commentValues
 };
+
+export const commentsByArticleId = `SELECT "commentId",comment, "authourId" FROM comments WHERE "articleId" = $1`;
