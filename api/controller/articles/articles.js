@@ -1,6 +1,17 @@
 import pool from '../../config/pool';
-import { createArticleQuery, searchArticleById, updateArticleById, deleteArticleById } from '../../models/articles/sql';
-import { commentsByArticleId, createCommentQuery } from '../../models/comments/sql';
+import {
+	createArticleQuery,
+	searchArticleById,
+	updateArticleById,
+	deleteArticleById,
+	flagArticleQuery
+} from '../../models/articles/sql';
+import {
+	commentsByArticleId,
+	createCommentQuery,
+	searchCommentById,
+	flagCommentQuery
+} from '../../models/comments/sql';
 import validateArticleInput from '../../validator/articles';
 import validateEditArticleInput from '../../validator/editArticle';
 import isEmpty from '../../validator/isEmpty';
@@ -204,6 +215,73 @@ class articlesController {
 					return res.status(404).json({
 						status: 'error',
 						error: 'Article not found'
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+	static flagArticle(req, res, next) {
+		// GET THE ID of the article to mark
+		const articleId = parseInt(req.params.articleId, 10);
+		// Search for the article to see if it exists
+		pool
+			.query(searchArticleById, [ articleId ])
+			.then((result) => {
+				if (result.rows.length > 0) {
+					pool
+						.query(flagArticleQuery)
+						.then((flaggedArt) => {
+							if (flaggedArt.rows.length > 0) {
+								return res.status(201).json({
+									status: 'success',
+									data: {
+										message: 'article has been flagged as inappropriate'
+									}
+								});
+							}
+						})
+						.catch((err) => {
+							console.log(err);
+						});
+				} else {
+					return res.status(404).json({
+						status: 'error',
+						error: 'Article not found'
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
+	static flagComment(req, res, next) {
+		const commentId = parseInt(req.params.commentId, 10);
+		pool
+			.query(searchCommentById, [ commentId ])
+			.then((result) => {
+				if (result.rows.length > 0) {
+					pool
+						.query(flagCommentQuery)
+						.then((flaggedComment) => {
+							if (flaggedComment.rows.length > 0) {
+								return res.status(201).json({
+									status: 'success',
+									data: {
+										message: 'comment has been flagged as inappropriate'
+									}
+								});
+							}
+						})
+						.catch((err) => {
+							console.log(err);
+						});
+				} else {
+					return res.status(404).json({
+						status: 'error',
+						error: 'Comment not found'
 					});
 				}
 			})
