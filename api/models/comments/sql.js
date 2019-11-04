@@ -10,7 +10,8 @@ CREATE TABLE comments(
     comment VARCHAR(255) NOT NULL,
     FOREIGN KEY ("authourId") REFERENCES users("userId") ON DELETE CASCADE,
     FOREIGN KEY ("articleId") REFERENCES articles("articleId") ON DELETE CASCADE,
-    FOREIGN KEY ("gifId") REFERENCES gifs("gifId") ON DELETE CASCADE
+    FOREIGN KEY ("gifId") REFERENCES gifs("gifId") ON DELETE CASCADE,
+    flagged BOOLEAN DEFAULT false
 )
 `;
 
@@ -23,3 +24,6 @@ export const createCommentQuery = {
 };
 
 export const commentsByArticleId = `SELECT "commentId",comment, "authourId" FROM comments WHERE "articleId" = $1`;
+export const searchCommentById = `SELECT * FROM comments WHERE "commentId" = $1`;
+export const flagCommentQuery = `UPDATE comments SET flagged = true RETURNING *`;
+export const deleteCommentById = `DELETE FROM comments WHERE "commentId" = $1 RETURNING *`;
