@@ -1,16 +1,14 @@
 import chai from 'chai';
+import fs from 'fs';
 import chaiHttp from 'chai-http';
 import app from '../api/app';
 import token from './token';
 const { expect } = chai;
-
 chai.use(chaiHttp);
-
 describe('Gifs Endpoints', () => {
 	let gifId = 1;
 	const gif = {
-		title: 'Complete Guide to React',
-		image: 'www.cloudinary.io/images/avatar.gif'
+		title: 'Complete Guide to React'
 	};
 	const Comment = {
 		comment: 'Nice gif dear'
@@ -21,7 +19,9 @@ describe('Gifs Endpoints', () => {
 				.request(app)
 				.post('/api/v1/gifs')
 				.set('authorization', token)
-				.send(gif)
+				.set('content-type', 'multipart/form-data')
+				.field('title', gif.title)
+				.attach('image', fs.readFileSync(__dirname + '/skeleton.gif'), 'skeleton.gif')
 				.then((res) => {
 					expect(res).to.have.status(201);
 					expect(res.body).to.be.an('object');

@@ -1,12 +1,13 @@
 import express from 'express';
 import verifyToken from '../../config/verifyToken';
 import gifController from '../../controller/gifs/gifs';
+import uploads from '../../middlewares/multer';
 const router = express.Router();
 
 //@ route POST /api/v1/gifs
 //@ desc User can post gifs
 // @ access private
-router.post('/gifs', verifyToken, gifController.postGif);
+router.post('/gifs', verifyToken, uploads.single('image'), gifController.postGif);
 //@ route DELETE /api/v1/gifs/:gifId
 //@ desc User can delete gif
 // @ access private
@@ -24,5 +25,4 @@ router.post('/gifs/:gifId/comment', verifyToken, gifController.postComment);
 // @ access private
 router.patch('/gifs/:gifId/flag', verifyToken, gifController.flagGif);
 // router.patch('/comments/:commentId/flag', verifyToken, gifController.flagComment);
-
 export default router;
