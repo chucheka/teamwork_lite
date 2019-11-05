@@ -19,4 +19,10 @@ router.get('/gifs/:gifId', verifyToken, gifController.getGifById);
 //@ desc User can comment on  gif with gifId
 // @ access private
 router.post('/gifs/:gifId/comment', verifyToken, gifController.postComment);
+//@ route PATCH /api/v1/gifs/:gifId/flag
+//@ desc User can flag gif(s) has inapropriate
+// @ access private
+router.patch('/gifs/:gifId/flag', verifyToken, gifController.flagGif);
+// router.patch('/comments/:commentId/flag', verifyToken, gifController.flagComment);
+
 export default router;
