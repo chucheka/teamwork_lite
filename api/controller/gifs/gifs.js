@@ -1,21 +1,32 @@
 import pool from '../../config/pool';
+import dotenv from 'dotenv';
+import cloudinary from 'cloudinary';
 import { createGifsQuery, searchGifById, deleteGifById, flagGifQuery } from '../../models/gifs/sql';
 import { commentsByGifId, createCommentQuery } from '../../models/comments/sql';
 import validateGifInput from '../../validator/gif';
 import isEmpty from '../../validator/isEmpty';
+
+dotenv.config();
+
+// Configure cloudinary
+cloudinary.config({
+	cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
 class gifController {
 	static getGifById(req, res, next) {
 		// Get the gifId from the request params
 		// Use it as a value in the query text
 		// Search for gif with the ID
+		// const gifId = parseInt(req.params.gifId, 10);
 
-		const gifId = parseInt(req.params.gifId, 10);
 		pool
 			.query(searchGifById, [ gifId ])
 			.then((result) => {
 				if (result.rows.length > 0) {
 					const { gifId, createdOn, title, imageUrl } = result.rows[0];
-
 					pool
 						.query(commentsByGifId, [ gifId ])
 						.then((resultCom) => {
@@ -45,23 +56,32 @@ class gifController {
 			});
 	}
 
-	static postGif(req, res, next) {
+	static async postGif(req, res, next) {
 		// Validate user input
-		const { image, title } = req.body;
-		const error = validateGifInput(req.body);
-		const isValid = isEmpty(error);
-		if (!isValid) {
-			return res.status(400).json({
-				status: 'error',
-				error: Object.values(error)[0]
-			});
-		}
 
-		pool
-			.query(createGifsQuery.createGif, [ title, image ])
-			.then((result) => {
-				if (result.rowCount == 1) {
-					const { gifId, createdOn, title, imageUrl } = result.rows[0];
+		try {
+			let image;
+			let { title } = req.body;
+			const error = validateGifInput(req.body);
+			const isValid = isEmpty(error);
+			if (!isValid) {
+				return res.status(400).json({
+					status: 'error',
+					error: Object.values(error)[0]
+				});
+			}
+			if (req.file) {
+				console.log(req.file.path);
+				const result = await cloudinary.v2.uploader.upload(req.file.path, {
+					public_id: `imageUploads/${req.file.originalname}`,
+					use_filename: true,
+					unique_filename: false
+				});
+				image = result.secure_url;
+				let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
+
+				if (gif.rows.length > 0) {
+					const { gifId, createdOn, title, imageUrl } = gif.rows[0];
 					return res.status(201).json({
 						status: 'success',
 						data: {
@@ -73,39 +93,40 @@ class gifController {
 						}
 					});
 				}
-			})
-			.catch((err) => {
-				console.log(err);
+			}
+		} catch (error) {
+			return res.status(500).json({
+				status: 'error',
+				error: error.message
 			});
+			console.log(error);
+		}
 	}
 
-	static deleteGif(req, res, next) {
+	static async deleteGif(req, res, next) {
 		// Get the Id of gif in params
 		// Search for it in the database and delete it
 		// Return a 201 response if deleted
 		// and a 404 response if gif doesnt exist
-		const gifId = parseInt(req.params.gifId, 10);
-		pool
-			.query(deleteGifById, [ gifId ])
-			.then((result) => {
-				if (result.rows.length > 0) {
-					console.log(result.rows[0]);
-					return res.status(201).json({
-						status: 'success',
-						data: {
-							message: 'Gif successfully deleted'
-						}
-					});
-				} else {
-					return res.status(404).json({
-						status: 'error',
-						error: 'Gif not found'
-					});
-				}
-			})
-			.catch((err) => {
-				console.log(err);
+		try {
+			const gifId = parseInt(req.params.gifId, 10);
+			const deletedGif = await pool.query(deleteGifById, [ gifId ]);
+			if (deletedGif.rows.length > 0) {
+				await cloudinary.v2.api.delete_resources([ deletedGif.rows[0].imageUrl ]);
+				return res.status(201).json({
+					status: 'success',
+					data: {
+						message: 'Gif successfully deleted'
+					}
+				});
+			}
+			return res.status(404).json({
+				status: 'error',
+				error: 'Gif not found'
 			});
+		} catch (error) {
+			console.log(error);
+		}
 	}
 	static postComment(req, res, next) {
 		// GET gif ID from params

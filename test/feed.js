@@ -43,7 +43,7 @@ describe('GET /api/v1/feed', () => {
 	// 		});
 	// });
 });
-describe('GET /api/v1/feed?tag=tagName', () => {
+describe.skip('GET /api/v1/feed?tag=tagName', () => {
 	const tagName = 'Programming';
 	it('Should be able to get all articles and/or gifs with a particular tag', (done) => {
 		chai

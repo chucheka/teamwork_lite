@@ -21,14 +21,4 @@ switch (process.env.NODE_ENV) {
 
 const pool = new Pool(connect);
 
-// let pool;
-// async function createPool() {
-// 	try {
-// 		pool = await new Pool(connect);
-// 		console.log(pool);
-// 		return pool;
-// 	} catch (error) {
-// 		console.log(error);
-// 	}
-// }
 export default pool;
