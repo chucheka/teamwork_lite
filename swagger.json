@@ -1,0 +1,974 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "",
+    "version": "1.0.0",
+    "title": "Teamwork App Api",
+    "termsOfService": "http://teamwork.io/terms/",
+    "contact": {
+      "email": "ryanucheka@gmail.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://teamwork.io/v1"
+    }
+  ],
+  "tags": [
+    {
+      "name": "articles",
+      "description": "Everything about your Articles"
+    },
+    {
+      "name": "gifs",
+      "description": "Everything about your gifs"
+    },
+    {
+      "name": "feed",
+      "description": "All gifs and articles"
+    },
+    {
+      "name": "user",
+      "description": "Operations about user"
+    }
+  ],
+  "paths": {
+    "/feed": {
+      "get": {
+        "tags": [
+          "feed"
+        ],
+        "summary": "Get the most recent gifs and/or articles",
+        "description": "Get the most recent gifs and/or articles",
+        "operationId": "getFeed",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Token"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Gif and/or Articles successfully gotten",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Feed"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles": {
+      "post": {
+        "tags": [
+          "articles"
+        ],
+        "summary": "Post article to teamwork.io",
+        "operationId": "postArticle",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Token"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Article successfully posted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Article"
+        }
+      }
+    },
+    "/articles/{articleId}": {
+      "get": {
+        "tags": [
+          "articles"
+        ],
+        "summary": "Get a particular article",
+        "description": "Get an article and its comments by articleId",
+        "operationId": "getArticleById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Token"
+          },
+          {
+            "$ref": "#/components/parameters/ArticleId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employees can view a specific article",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "Article successfully posted"
+                        },
+                        "createdOn": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "React complete guide"
+                        },
+                        "article": {
+                          "type": "string",
+                          "example": "React hooks allow usage of state with functional components"
+                        },
+                        "authourId": {
+                          "type": "integer",
+                          "example": 55
+                        },
+                        "comments": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "commentId": {
+                                "type": "integer",
+                                "example": 34
+                              },
+                              "comment": {
+                                "type": "string",
+                                "example": "Nice post"
+                              },
+                              "authourId": {
+                                "type": "string",
+                                "example": 23
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "articles"
+        ],
+        "summary": "Edit article by ID",
+        "description": "Update and Edit an article by given ID",
+        "operationId": "EditById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Token"
+          },
+          {
+            "$ref": "#/components/parameters/ArticleId"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successfully editted article",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Article not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Article with ID not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "articles"
+        ],
+        "summary": "Delete an article by ID",
+        "description": "Delete an article by ID",
+        "operationId": "deleteArticleById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Token"
+          },
+          {
+            "$ref": "#/components/parameters/ArticleId"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Article with ID delete successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "Article successfully deleted"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Article not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArticleNotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/articles/{articleId}/comment": {
+      "post": {
+        "tags": [
+          "articles"
+        ],
+        "summary": "Comment on the article with ID",
+        "description": "Comment on the article with the given articleId",
+        "operationId": "commentOnArticle",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Token"
+          },
+          {
+            "$ref": "#/components/parameters/ArticleId"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successfully post comment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comment"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Comment text to post",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string",
+                    "example": "Nice article on SCRUM"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gifs": {
+      "post": {
+        "tags": [
+          "gifs"
+        ],
+        "summary": "Post gifs to teamwork.io",
+        "operationId": "postGif",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Token"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Gif successfully posted",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "$ref": "#/components/schemas/Gif"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/Gif"
+        }
+      }
+    },
+    "/gifs/{gifId}": {
+      "get": {
+        "tags": [
+          "gifs"
+        ],
+        "summary": "Get a particular gifs",
+        "description": "Get a gif and its comments by gifId",
+        "operationId": "getGifById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Token"
+          },
+          {
+            "$ref": "#/components/parameters/GifId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Employees can view a specific gifId",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "Gif successfully posted"
+                        },
+                        "gifId": {
+                          "type": "integer",
+                          "example": 12
+                        },
+                        "createdOn": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "title": {
+                          "type": "string",
+                          "example": "React complete guide"
+                        },
+                        "url": {
+                          "type": "string"
+                        },
+                        "authourId": {
+                          "type": "integer",
+                          "example": 55
+                        },
+                        "comments": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "commentId": {
+                                "type": "integer",
+                                "example": 34
+                              },
+                              "comment": {
+                                "type": "string",
+                                "example": "Nice post"
+                              },
+                              "authourId": {
+                                "type": "string",
+                                "example": 23
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "gifs"
+        ],
+        "summary": "Delete an gif by ID",
+        "description": "Delete an gif by ID",
+        "operationId": "deleteGifById",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Token"
+          },
+          {
+            "$ref": "#/components/parameters/GifId"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Gif with ID delete successfully",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "type": "string",
+                          "example": "Gif post successfully deleted"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Gif not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GifNotFound"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gifs/{gifId}/comment": {
+      "post": {
+        "tags": [
+          "gifs"
+        ],
+        "summary": "Comment on the gifId with ID",
+        "description": "Comment on the gif with the gifId",
+        "operationId": "commentOnGif",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/Token"
+          },
+          {
+            "$ref": "#/components/parameters/GifId"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successfully post comment",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GifComment"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "description": "Comment text to post",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "type": "string",
+                    "example": "Nice gif on SCRUM"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/create_user": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Admin can create an employee user account",
+        "description": "Admin can create an employee user account and add token to response",
+        "operationId": "createUserAccount",
+        "responses": {
+          "201": {
+            "description": "Successfully created employee account",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/User"
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Login User",
+        "description": "User can log in and token returned as response",
+        "operationId": "signIn",
+        "responses": {
+          "200": {
+            "description": "Successfully logged in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignInUser"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "$ref": "#/components/requestBodies/SignInUser"
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "Token": {
+        "name": "token",
+        "in": "header",
+        "description": "Token to used for authentication",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "example": "hfh77bbbsgddhgstwttwww"
+        }
+      },
+      "ArticleId": {
+        "name": "articleId",
+        "in": "path",
+        "description": "ID of article to be edited",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "maximum": 10
+        }
+      },
+      "GifId": {
+        "name": "gifId",
+        "in": "path",
+        "description": "ID of gif",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "maximum": 10
+        }
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "User account successfully created"
+              },
+              "token": {
+                "type": "string",
+                "example": "hfjjdjggjkksksks"
+              },
+              "userId": {
+                "type": "integer",
+                "example": 34
+              }
+            }
+          }
+        }
+      },
+      "SignInUser": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "token": {
+                "type": "string",
+                "example": "hfjjdjggjkksksks"
+              },
+              "userId": {
+                "type": "integer",
+                "example": 34
+              }
+            }
+          }
+        }
+      },
+      "Feed": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "gifId": {
+                  "type": "integer",
+                  "example": 53
+                },
+                "createdOn": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "React complete guide"
+                },
+                "imageUrl": {
+                  "type": "string",
+                  "example": "http://www.cloudinary.io/images/image.png"
+                },
+                "authourId": {
+                  "type": "integer",
+                  "example": 55
+                }
+              }
+            }
+          }
+        }
+      },
+      "Article": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Article successfully posted"
+              },
+              "articleId": {
+                "type": "integer",
+                "example": 53
+              },
+              "createdOn": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "title": {
+                "type": "string",
+                "example": "React complete guide"
+              },
+              "article": {
+                "type": "string",
+                "example": "hdh d djddjdjjdueue"
+              },
+              "authourId": {
+                "type": "integer",
+                "example": 55
+              }
+            }
+          }
+        }
+      },
+      "Gif": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Gif successfully posted"
+              },
+              "gifId": {
+                "type": "integer",
+                "example": 53
+              },
+              "createdOn": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "title": {
+                "type": "string",
+                "example": "React complete guide"
+              },
+              "imageUrl": {
+                "type": "string",
+                "example": "http://www.cloudinary.io/images/image.png"
+              },
+              "authourId": {
+                "type": "integer",
+                "example": 55
+              }
+            }
+          }
+        }
+      },
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Comment successfully created"
+              },
+              "articleTitle": {
+                "type": "string",
+                "example": "The Future with AI"
+              },
+              "article": {
+                "type": "string",
+                "example": "blablablbalabale"
+              },
+              "comment": {
+                "type": "string",
+                "example": "Nice article!!!"
+              }
+            }
+          }
+        }
+      },
+      "GifComment": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "success"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string",
+                "example": "Comment successfully created"
+              },
+              "gifTitle": {
+                "type": "string",
+                "example": "The Future with AI"
+              },
+              "comment": {
+                "type": "string",
+                "example": "Nice article!!!"
+              }
+            }
+          }
+        }
+      },
+      "ArticleNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "error": {
+            "type": "string",
+            "example": "Article with ID not found"
+          }
+        }
+      },
+      "GifNotFound": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "example": "error"
+          },
+          "error": {
+            "type": "string",
+            "example": "Gif with ID not found"
+          }
+        }
+      }
+    },
+    "requestBodies": {
+      "Article": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "article": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Gif": {
+        "content": {
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "image": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          }
+        }
+      },
+      "SignInUser": {
+        "description": "Credentials for logging in",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "ryanucheka@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "chike22sdfgg"
+                }
+              }
+            }
+          }
+        }
+      },
+      "User": {
+        "description": "Employee details for creating account",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firsrName": {
+                  "type": "string",
+                  "example": "Chike"
+                },
+                "lastName": {
+                  "type": "string",
+                  "example": "Ucheka"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "ryanucheka@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "chike22ucheka"
+                },
+                "password2": {
+                  "type": "string",
+                  "example": "chike22ucheka"
+                },
+                "gender": {
+                  "type": "string",
+                  "enum": [
+                    "male",
+                    "female"
+                  ]
+                },
+                "jobRole": {
+                  "type": "string",
+                  "example": "Database Administrator"
+                },
+                "department": {
+                  "type": "string",
+                  "example": "IT"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "No 12 Creascent street,Houston"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

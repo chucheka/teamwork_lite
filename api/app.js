@@ -1,5 +1,8 @@
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../swagger.json';
 import authRouter from '../api/routes/user/user';
+
 import articleRouter from '../api/routes/articles/articles';
 import gifRouter from '../api/routes/gifs/gifs';
 import feedRouter from '../api/routes/feed/feed';
@@ -17,11 +20,14 @@ app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,DELETE,PATCH,OPTIONS');
 	next();
 });
+
 app.get('/', (req, res, next) => {
 	res.status(200).json({
 		message: 'success'
 	});
 });
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1', articleRouter);
