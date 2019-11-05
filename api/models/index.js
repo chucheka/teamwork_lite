@@ -29,6 +29,6 @@ queryRunner(createUserQuery.createUser, createUserQuery.userValues);
 queryRunner(createArticleQuery.createArticle, createArticleQuery.articleValues);
 queryRunner(createGifsQuery.createGif, createGifsQuery.gifValues);
 
-setTimeout(() => {
-	queryRunner(createCommentQuery.createComment, createCommentQuery.commentValues);
-}, 2000);
+// setTimeout(() => {
+// 	queryRunner(createCommentQuery.createComment, createCommentQuery.commentValues);
+// }, 2000);

@@ -26,7 +26,7 @@ app.get('/', (req, res, next) => {
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1', articleRouter);
 app.use('/api/v1', gifRouter);
-app.use('/', feedRouter);
+app.use('/api/v1', feedRouter);
 app.listen(port, () => {
 	console.log(`Server started on http://localhost:${port}/api/v1`);
 });

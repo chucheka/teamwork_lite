@@ -36,7 +36,7 @@ class gifController {
 				} else {
 					return res.status(404).json({
 						status: 'error',
-						error: ` Gif with Id ${gifId} not found`
+						error: `Gif with Id ${gifId} not found`
 					});
 				}
 			})
@@ -176,7 +176,7 @@ class gifController {
 								return res.status(201).json({
 									status: 'success',
 									data: {
-										message: 'gif has been flagged as inappropriate'
+										message: 'Gif has been flagged'
 									}
 								});
 							}
