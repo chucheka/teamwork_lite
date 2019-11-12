@@ -5,6 +5,12 @@ switch (process.env.NODE_ENV) {
 	case 'test':
 		connect = {
 			connectionString: process.env.DB_DEV
+			// database: 'testDB',
+			// user: 'Chike',
+			// port: 5432,
+			// max: 50, // set pool max size to 50
+			// idleTimeoutMillis: 600000,
+			// connectionTimeoutMillis: 6000
 		};
 		break;
 	case 'production':

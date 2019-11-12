@@ -2,7 +2,7 @@
 export const user = {
 	firstName: 'Chike',
 	lastName: 'Ucheka',
-	email: 'ryanucheka@gmail.com',
+	email: 'tableuser@gmail.com',
 	password: 'chike22ucheka',
 	password2: 'chike22ucheka',
 	gender: 'Male',
@@ -11,18 +11,11 @@ export const user = {
 	address: 'Area M World Bank Housing Estate'
 };
 export const articleObj = {
-	title: 'Complete Guide to React',
-	article: 'React hooks enable you use state with functional components'
+	title: 'Initial article by before test script',
+	article: 'Initial article by before test script'
 };
 
 export const gifObj = {
-	title: 'Complete Guide to React',
+	title: 'Initial gif by before test script',
 	imageUrl: '/http://cloudinary.io/images/avatar.png'
-};
-
-export const Comment = {
-	authourId: 1,
-	articleId: 1,
-	gifId: 1,
-	comment: 'Nice article dear'
 };

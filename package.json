@@ -6,11 +6,15 @@
 	"scripts": {
 		"lint": "eslint */*.js --fix",
 		"dev": "nodemon --exec babel-node ./api/app.js",
-		"test": "cross-env NODE_ENV=test npm run migration && cross-env NODE_ENV=test mocha --require @babel/polyfill --require @babel/register test/*.js --no-timeout --exit",
+		"test": "SET NODE_ENV=test && npm run migration && nyc --reporter=text-summary --reporter=lcov --reporter=text mocha --require @babel/polyfill --require @babel/register test/*.js --no-timeout --exit",
 		"clean": "rm -rf src",
 		"build": "npm run clean && babel api --out-dir src",
+		"coverage": "nyc report --reporter=text-lcov | coveralls",
 		"createTables": "babel-node ./api/models/index.js",
 		"migration": "npm run createTables"
+	},
+	"engines": {
+		"node": "8.11.2"
 	},
 	"repository": {
 		"type": "git",
@@ -22,6 +26,18 @@
 		"url": "https://github.com/ucheka22/teamwork_lite/issues"
 	},
 	"homepage": "https://github.com/ucheka22/teamwork_lite#readme",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"cloudinary": "^1.16.0",
+		"cross-env": "^6.0.3",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"multer": "^1.4.2",
+		"pg": "^7.12.1",
+		"swagger-ui-express": "^4.1.2",
+		"validator": "^12.0.0"
+	},
 	"devDependencies": {
 		"@babel/cli": "^7.6.4",
 		"@babel/core": "^7.6.4",
@@ -31,24 +47,16 @@
 		"@babel/preset-env": "^7.6.3",
 		"@babel/register": "^7.6.2",
 		"@babel/runtime": "^7.6.3",
+		"@istanbuljs/nyc-config-babel": "^2.1.1",
+		"babel-plugin-istanbul": "^5.2.0",
+		"chai": "^4.2.0",
+		"chai-http": "^4.3.0",
+		"coveralls": "^3.0.7",
 		"eslint": "^6.6.0",
 		"eslint-config-airbnb-base": "^14.0.0",
 		"eslint-plugin-import": "^2.18.2",
-		"nodemon": "^1.19.4"
-	},
-	"dependencies": {
-		"bcryptjs": "^2.4.3",
-		"chai": "^4.2.0",
-		"chai-http": "^4.3.0",
-		"cloudinary": "^1.16.0",
-		"cross-env": "^6.0.3",
-		"dotenv": "^8.2.0",
-		"express": "^4.17.1",
-		"jsonwebtoken": "^8.5.1",
 		"mocha": "^6.2.2",
-		"multer": "^1.4.2",
-		"pg": "^7.12.1",
-		"swagger-ui-express": "^4.1.2",
-		"validator": "^12.0.0"
+		"nodemon": "^1.19.4",
+		"nyc": "^14.1.1"
 	}
 }

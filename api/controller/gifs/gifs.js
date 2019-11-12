@@ -20,7 +20,7 @@ class gifController {
 		// Get the gifId from the request params
 		// Use it as a value in the query text
 		// Search for gif with the ID
-		// const gifId = parseInt(req.params.gifId, 10);
+		const gifId = parseInt(req.params.gifId, 10);
 
 		pool
 			.query(searchGifById, [ gifId ])
@@ -71,7 +71,7 @@ class gifController {
 				});
 			}
 			if (req.file) {
-				console.log(req.file.path);
+				// console.log(req.file.path);
 				const result = await cloudinary.v2.uploader.upload(req.file.path, {
 					public_id: `imageUploads/${req.file.originalname}`,
 					use_filename: true,

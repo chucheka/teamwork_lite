@@ -2,11 +2,11 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../swagger.json';
 import authRouter from '../api/routes/user/user';
-
 import articleRouter from '../api/routes/articles/articles';
 import gifRouter from '../api/routes/gifs/gifs';
 import feedRouter from '../api/routes/feed/feed';
 import dotenv from 'dotenv';
+
 const app = express();
 dotenv.config();
 

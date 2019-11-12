@@ -5,39 +5,12 @@ import app from '../api/app';
 const { expect } = chai;
 
 chai.use(chaiHttp);
-describe('Auth User', () => {
-	const employeeDetails = {
-		firstName: 'Chike',
-		lastName: 'Ucheka',
-		email: 'ryanucheka22@gmail.com',
-		password: 'chike22ucheka',
-		password2: 'chike22ucheka',
-		gender: 'Male',
-		jobRole: 'Senior Engineer',
-		department: 'IT',
-		address: 'Area M World Bank Housing Estate'
-	};
-
-	before('Craete user', (done) => {
-		chai
-			.request(app)
-			.post('/api/v1/auth/create-user')
-			.set('content-type', 'application/json')
-			.send(employeeDetails)
-			.then((res) => {
-				expect(res).to.have.status(201);
-				done();
-			})
-			.catch((err) => {
-				done(err);
-			});
-	});
-
+describe.only('Auth User', () => {
 	describe('POST /api/v1/auth/create_user', () => {
 		const user = {
 			firstName: 'Chike',
 			lastName: 'Ucheka',
-			email: 'ryanucheka@gmail.com',
+			email: 'ryanucheka22@gmail.com',
 			password: 'chike22ucheka',
 			password2: 'chike22ucheka',
 			gender: 'Male',
@@ -80,6 +53,27 @@ describe('Auth User', () => {
 					done(err);
 				});
 		});
+		it('should login user with right credentials and return a token', (done) => {
+			console.log(user.password);
+			chai
+				.request(app)
+				.post('/api/v1/auth/signin')
+				.send({
+					email: user.email,
+					password: user.password
+				})
+				.then((res) => {
+					expect(res).to.have.status(200);
+					expect(res.body).to.be.an('object');
+					expect(res.body).to.have.property('status', 'success');
+					expect(res.body.data).to.be.an('object');
+					expect(res.body.data).to.include.all.keys('token', 'userId', 'message');
+					done();
+				})
+				.catch((err) => {
+					done(err);
+				});
+		});
 		it("Should not create user if password don't match", (done) => {
 			user.password = 'chike22';
 			chai
@@ -97,38 +91,17 @@ describe('Auth User', () => {
 					done(err);
 				});
 		});
-	});
-	describe('POST /api/v1/auth/signin', () => {
-		it('should login user with right credentials and return a token', (done) => {
-			chai
-				.request(app)
-				.post('/api/v1/auth/signin')
-				.send({
-					email: employeeDetails.email,
-					password: employeeDetails.password
-				})
-				.then((res) => {
-					expect(res).to.have.status(200);
-					expect(res.body).to.be.an('object');
-					expect(res.body).to.have.property('status', 'success');
-					expect(res.body.data).to.be.an('object');
-					expect(res.body.data).to.include.all.keys('token', 'userId', 'message');
-					done();
-				})
-				.catch((err) => {
-					done(err);
-				});
-		});
+
 		it('Should not log in unregistered user', (done) => {
-			employeeDetails.email = 'notanemployee@gmail.com';
-			employeeDetails.password = 'chdjdjdfhf';
+			user.email = 'notanemployee@gmail.com';
+			user.password = 'chdjdjdfhf';
 
 			chai
 				.request(app)
 				.post('/api/v1/auth/signin')
 				.send({
-					email: employeeDetails.email,
-					password: employeeDetails.password
+					email: user.email,
+					password: user.password
 				})
 				.then((res) => {
 					expect(res).to.have.status(400);

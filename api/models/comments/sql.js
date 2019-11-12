@@ -1,5 +1,3 @@
-import { Comment } from '../objects';
-
 export const commentsTable = `DROP TABLE IF EXISTS comments CASCADE;
 CREATE TABLE comments(
     "authourId" INTEGER NULL,
@@ -16,11 +14,9 @@ CREATE TABLE comments(
 `;
 
 const createComment = `INSERT INTO comments("authourId","articleId","gifId",comment) VALUES($1,$2,$3,$4) RETURNING *`;
-const commentValues = [ Comment.authourId, Comment.articleId, Comment.gifId, Comment.comment ];
 
 export const createCommentQuery = {
-	createComment,
-	commentValues
+	createComment
 };
 
 export const commentsByArticleId = `SELECT "commentId",comment, "authourId" FROM comments WHERE "articleId" = $1`;

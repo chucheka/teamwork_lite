@@ -1,0 +1,5 @@
+{
+	"extends": "@istanbuljs/nyc-config-babel",
+	"include": [ "api/**/*.js" ],
+	"exclude": [ "api/models/**" ]
+}

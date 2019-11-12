@@ -33,6 +33,7 @@ router.patch('/articles/:articleId/comment', verifyToken, articleController.post
 //@ desc User can flag article(s) has inapropriate
 // @ access private
 router.patch('/articles/:articleId/flag', verifyToken, articleController.flagArticle);
+router.delete('/articles/:articleId/flag', verifyToken, articleController.deleteFlaggedArticle);
 router.patch('/comments/:commentId/flag', verifyToken, articleController.flagComment);
 
 export default router;

@@ -4,7 +4,8 @@ import {
 	searchArticleById,
 	updateArticleById,
 	deleteArticleById,
-	flagArticleQuery
+	flagArticleQuery,
+	deleteFlaggedArticleById
 } from '../../models/articles/sql';
 import {
 	commentsByArticleId,
@@ -58,9 +59,8 @@ class articlesController {
 		pool
 			.query(searchArticleById, [ articleId ])
 			.then((result) => {
-				if (result.rowCount == 1) {
+				if (result.rows.length > 0) {
 					const { articleId, createdOn, title, article } = result.rows[0];
-
 					pool
 						.query(commentsByArticleId, [ articleId ])
 						.then((resultCom) => {
@@ -147,8 +147,7 @@ class articlesController {
 		pool
 			.query(deleteArticleById, [ articleId ])
 			.then((result) => {
-				if (result.rowCount == 1) {
-					console.log(result.rows[0]);
+				if (result.rows.length > 0) {
 					return res.status(201).json({
 						status: 'success',
 						data: {
@@ -191,13 +190,13 @@ class articlesController {
 		pool
 			.query(searchArticleById, [ articleId ])
 			.then((result) => {
-				if (result.rowCount == 1) {
+				if (result.rows.length > 0) {
 					const { createdOn, article, title } = result.rows[0];
 					// Create the comment and attach it to the response body
 					pool
 						.query(createCommentQuery.createComment, [ userId, articleId, , comment ])
 						.then((commentRow) => {
-							if (commentRow.rowCount == 1) {
+							if (commentRow.rows.length > 0) {
 								const { comment } = commentRow.rows[0];
 								return res.status(201).json({
 									status: 'success',
@@ -257,6 +256,30 @@ class articlesController {
 			});
 	}
 
+	static deleteFlaggedArticle(req, res, next) {
+		const articleId = parseInt(req.params.articleId, 10);
+		//
+		pool
+			.query(deleteFlaggedArticleById, [ articleId ])
+			.then((result) => {
+				if (result.rows.length > 0) {
+					return res.status(201).json({
+						status: 'success',
+						data: {
+							message: 'Article successfully deleted'
+						}
+					});
+				} else {
+					return res.status(404).json({
+						status: 'error',
+						error: 'Article not found or not flagged'
+					});
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
 	static flagComment(req, res, next) {
 		const commentId = parseInt(req.params.commentId, 10);
 		pool

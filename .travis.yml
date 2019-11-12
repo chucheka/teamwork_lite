@@ -1,0 +1,17 @@
+language: node_js
+node_js:
+  - '8.11.2'
+services:
+  - postgresql
+cache:
+  directories:
+    - node_modules
+before_script:
+ - npm install
+ - psql -c 'CREATE TABLE testDB;' -U postgres
+ - psql -c '  CREATE USER Chike WITH PASSWORD null;' -U postgres
+script:
+  - npm run test
+after_script: 
+  - npm run coverage
+  
