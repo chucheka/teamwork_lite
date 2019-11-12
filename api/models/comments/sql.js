@@ -1,4 +1,4 @@
-export const commentsTable = `DROP TABLE IF EXISTS comments CASCADE;
+export const commentsTable = `
 CREATE TABLE comments(
     "authourId" INTEGER NULL,
    "articleId" INTEGER NULL,
