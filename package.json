@@ -7,7 +7,7 @@
 		"lint": "eslint */*.js --fix",
 		"start": "npm run build && node ./src/app.js",
 		"dev": "npm run migration && nodemon --exec babel-node ./api/app.js",
-		"test": "cross-env NODE_ENV=test && cross-env NODE_ENV=test npm run migration && cross-env NODE_ENV=test nyc --reporter=text-summary --reporter=lcov --reporter=text mocha --require @babel/polyfill --require @babel/register test/*.js --no-timeout --exit",
+		"test": "cross-env NODE_ENV=test && npm run migration && nyc --reporter=text-summary --reporter=lcov --reporter=text mocha --require @babel/polyfill --require @babel/register test/*.js --no-timeout --exit",
 		"clean": "rm -rf src",
 		"build": "npm run clean && babel api --out-dir src",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
