@@ -4,7 +4,7 @@ node_js:
 env:
   global:
   - NODE_ENV=test
-notification:
+notifications:
   - email:false
 services:
   - postgresql

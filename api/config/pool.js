@@ -17,7 +17,7 @@ switch (process.env.NODE_ENV) {
 		break;
 	default:
 		connect = {
-			connectionString: process.env.DB_DEV
+			connectionString: process.env.DEV_DB
 		};
 		break;
 }

@@ -28,9 +28,9 @@ class articlesController {
 				error: Object.values(error)[0]
 			});
 		}
-		const { article, title } = req.body;
+		const { article, title, tag } = req.body;
 		pool
-			.query(createArticleQuery.createArticle, [ article, title ])
+			.query(createArticleQuery.createArticle, [ article, title, tag ])
 			.then((result) => {
 				if (result.rowCount == 1) {
 					const { articleId, createdOn, title } = result.rows[0];
@@ -258,27 +258,36 @@ class articlesController {
 
 	static deleteFlaggedArticle(req, res, next) {
 		const articleId = parseInt(req.params.articleId, 10);
-		//
-		pool
-			.query(deleteFlaggedArticleById, [ articleId ])
-			.then((result) => {
-				if (result.rows.length > 0) {
-					return res.status(201).json({
-						status: 'success',
-						data: {
-							message: 'Article successfully deleted'
-						}
-					});
-				} else {
-					return res.status(404).json({
-						status: 'error',
-						error: 'Article not found or not flagged'
-					});
-				}
-			})
-			.catch((err) => {
-				console.log(err);
+
+		const { userName } = req.body;
+
+		if (userName === 'Admin') {
+			pool
+				.query(deleteFlaggedArticleById, [ articleId ])
+				.then((result) => {
+					if (result.rows.length > 0) {
+						return res.status(201).json({
+							status: 'success',
+							data: {
+								message: 'Article successfully deleted'
+							}
+						});
+					} else {
+						return res.status(404).json({
+							status: 'error',
+							error: 'Article not found or not flagged'
+						});
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		} else {
+			return res.status(401).json({
+				status: 'error',
+				error: 'Only admin can delete flagged articles'
 			});
+		}
 	}
 	static flagComment(req, res, next) {
 		const commentId = parseInt(req.params.commentId, 10);
@@ -311,6 +320,31 @@ class articlesController {
 			.catch((err) => {
 				console.log(err);
 			});
+	}
+	static async getArticleByTagName(req, res) {
+		const { tag } = req.query;
+		const query = {
+			text: `SELECT * FROM articles WHERE tag = ${tag}`
+		};
+		try {
+			const result = await pool.query(query);
+			if (result.rows.length > 0) {
+				res.status(200).json({
+					status: 'success',
+					data: result.rows
+				});
+			} else {
+				res.status(404).json({
+					status: 'error',
+					error: 'Not articles in this category'
+				});
+			}
+		} catch (error) {
+			res.status(500).json({
+				status: 'error',
+				error: error.message
+			});
+		}
 	}
 }
 

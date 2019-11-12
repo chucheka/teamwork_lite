@@ -12,7 +12,8 @@ export const user = {
 };
 export const articleObj = {
 	title: 'Initial article by before test script',
-	article: 'Initial article by before test script'
+	article: 'Initial article by before test script',
+	tag: 'Politics'
 };
 
 export const gifObj = {

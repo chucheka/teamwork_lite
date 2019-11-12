@@ -35,5 +35,6 @@ router.patch('/articles/:articleId/comment', verifyToken, articleController.post
 router.patch('/articles/:articleId/flag', verifyToken, articleController.flagArticle);
 router.delete('/articles/:articleId/flag', verifyToken, articleController.deleteFlaggedArticle);
 router.patch('/comments/:commentId/flag', verifyToken, articleController.flagComment);
+router.get('/articles', verifyToken, articleController.getArticleByTagName);
 
 export default router;

@@ -45,6 +45,7 @@ class userController {
 								userId,
 								firstName,
 								lastName,
+								userName: firstName === 'Chike' && lastName === 'Ucheka' ? 'Admin' : firstName,
 								email
 							};
 							jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '7d' }, (err, token) => {
@@ -97,6 +98,7 @@ class userController {
 								userId,
 								firstName,
 								lastName,
+								userName: firstName === 'Chike' && lastName === 'Ucheka' ? 'Admin' : firstName,
 								email
 							};
 							jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '7d' }, (err, token) => {
