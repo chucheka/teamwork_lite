@@ -6,7 +6,7 @@
 	"scripts": {
 		"lint": "eslint */*.js --fix",
 		"dev": "nodemon --exec babel-node ./api/app.js",
-		"test": "SET NODE_ENV=test && npm run migration && nyc --reporter=text-summary --reporter=lcov --reporter=text mocha --require @babel/polyfill --require @babel/register test/*.js --no-timeout --exit",
+		"test": "cross-env NODE_ENV=test && npm run migration && nyc --reporter=text-summary --reporter=lcov --reporter=text mocha --require @babel/polyfill --require @babel/register test/*.js --no-timeout --exit",
 		"clean": "rm -rf src",
 		"build": "npm run clean && babel api --out-dir src",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
