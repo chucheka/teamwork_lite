@@ -1,6 +1,6 @@
 import { articleObj } from '../objects';
 
-export const articlesTable = `DROP TABLE IF EXISTS articles CASCADE;
+export const articlesTable = `
 CREATE TABLE articles(
     "articleId" SERIAL PRIMARY KEY NOT NULL,
    "createdOn" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
