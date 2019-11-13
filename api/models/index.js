@@ -35,14 +35,14 @@ const queries = [
 	[ (dropCommentTable, commentsTable, 'Comments') ]
 ];
 
-function initializer(queries) {
-	arr.forEach((item) => {
+const initializer = function(queries) {
+	queries.forEach((item) => {
 		setTimeout((item) => {
 			dropTable(item[0], item[2]);
 			createTable(item[1], item[2]);
 		}, 20000);
 	});
-}
+};
 
 initializer(queries);
 // dropTable(dropUserTable, 'User');
