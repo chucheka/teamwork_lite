@@ -145,6 +145,26 @@ describe('Articles Endpoints', () => {
 				});
 		});
 	});
+	describe('PATCH /api/v1/articles/:articleId', () => {
+		it('Should be able to flag a article as inapropriate', (done) => {
+			chai
+				.request(app)
+				.patch(`/api/v1/articles/${articleId}`)
+				.query({ flagged: true })
+				.set('authorization', token)
+				.then((res) => {
+					expect(res).to.have.status(201);
+					expect(res.body).to.be.an('object');
+					expect(res.body).to.have.property('status', 'success');
+					expect(res.body).to.have.property('data');
+					expect(res.body.data).to.have.property('message', 'Article has been flagged as inapropriate');
+					done();
+				})
+				.catch((err) => {
+					done(err);
+				});
+		});
+	});
 	describe('DELETE /api/v1/articles/:articleId', () => {
 		it.skip('Should delete an article with give articleId', (done) => {
 			let articleId = 1;
@@ -181,7 +201,7 @@ describe('Articles Endpoints', () => {
 				});
 		});
 	});
-	describe.skip('POST /api/v1/articles/:articleId/comment', () => {
+	describe('POST /api/v1/articles/:articleId/comment', () => {
 		it('Users should be able to post comments on an article', (done) => {
 			let articleId = 1;
 			chai
@@ -197,7 +217,7 @@ describe('Articles Endpoints', () => {
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
 					expect(res.body.data).to.have.property('message', 'Comment successfully created');
-					expect(res.body.data).to.include.all.keys(
+					expect(res.body.data).to.include.any.keys(
 						'message',
 						'createdOn',
 						'articleTitle',
@@ -214,26 +234,6 @@ describe('Articles Endpoints', () => {
 		});
 	});
 
-	// describe.only('PATCH /api/v1/articles/:articleId', () => {
-	// 	it('Should be able to flag a article as inapropriate', (done) => {
-	// 		chai
-	// 			.request(app)
-	// 			.patch(`/api/v1/articles/${articleId}`)
-	// 			.query({ flagged: true })
-	// 			.set('authorization', token)
-	// 			.then((res) => {
-	// 				expect(res).to.have.status(201);
-	// 				expect(res.body).to.be.an('object');
-	// 				expect(res.body).to.have.property('status', 'success');
-	// 				expect(res.body).to.have.property('data');
-	// 				expect(res.body.data).to.have.property('message', 'Article has been flagged as inapropriate');
-	// 				done();
-	// 			})
-	// 			.catch((err) => {
-	// 				done(err);
-	// 			});
-	// 	});
-	// });
 	// describe.skip('Delete /api/v1/articles/:articleId', () => {
 	// 	it('Should be able to delete article(s) flagged as inapropriate', (done) => {
 	// 		chai

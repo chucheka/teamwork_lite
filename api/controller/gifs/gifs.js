@@ -183,6 +183,11 @@ class gifController {
 										comment: comment
 									}
 								});
+							} else {
+								return res.status(500).json({
+									status: 'error',
+									error: err.message
+								});
 							}
 						})
 						.catch((err) => {
