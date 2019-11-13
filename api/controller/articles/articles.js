@@ -103,24 +103,27 @@ class articlesController {
 			});
 		}
 		const articleId = parseInt(req.params.articleId, 10);
-		let { article, title } = req.body;
+		let { article, title, tag } = req.body;
+
 		pool
 			.query(searchArticleById, [ articleId ])
 			.then((result) => {
-				if (result.rowCount == 1) {
+				if (result.rows.length > 0) {
 					const storedArticle = result.rows[0];
 					article = isEmpty(article) ? storedArticle.article : article;
 					title = isEmpty(title) ? storedArticle.title : title;
+					tag = isEmpty(tag) ? storedArticle.tag : tag;
 
 					pool
-						.query(updateArticleById, [ article, title, articleId ])
+						.query(updateArticleById, [ article, title, tag, articleId ])
 						.then((updateArticle) => {
+							const { article, title } = updateArticle.rows[0];
 							res.status(201).json({
 								status: 'success',
 								data: {
 									message: 'Article successfully updated',
-									title: updateArticle.title,
-									article: updateArticle.article
+									title: title,
+									article: article
 								}
 							});
 						})

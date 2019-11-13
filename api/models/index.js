@@ -20,14 +20,16 @@ async function queryRunner(queryText, queryValue) {
 	}
 }
 
-const arrayOfQueries = [ userTable, articlesTable, gifsTable, commentsTable ];
-arrayOfQueries.forEach((query) => {
-	createTable(query, 'User');
-});
-// createTable(userTable, 'User');
-// createTable(articlesTable, 'Artilce');
-// createTable(gifsTable, 'Gif');
-// createTable(commentsTable, 'Comment');
+// const arrayOfQueries = [ userTable, articlesTable, gifsTable, commentsTable ];
+// arrayOfQueries.forEach((query) => {
+// 	setTimeout(() => {
+// 		createTable(query, 'User');
+// 	}, 20000);
+// });
+createTable(userTable, 'User');
+createTable(articlesTable, 'Artilce');
+createTable(gifsTable, 'Gif');
+createTable(commentsTable, 'Comment');
 // queryRunner(createUserQuery.createUser, createUserQuery.userValues);
 // queryRunner(createArticleQuery.createArticle, createArticleQuery.articleValues);
 // queryRunner(createGifsQuery.createGif, createGifsQuery.gifValues);

@@ -27,6 +27,7 @@ class gifController {
 			.then((result) => {
 				if (result.rows.length > 0) {
 					const { gifId, createdOn, title, imageUrl } = result.rows[0];
+					console.log(imageUrl);
 					pool
 						.query(commentsByGifId, [ gifId ])
 						.then((resultCom) => {
@@ -36,7 +37,7 @@ class gifController {
 									id: gifId,
 									createdOn,
 									title,
-									imageUrl,
+									imageUrl: imageUrl.split(' ')[0],
 									comments: resultCom.rows
 								}
 							});
@@ -77,7 +78,7 @@ class gifController {
 					use_filename: true,
 					unique_filename: false
 				});
-				image = result.secure_url;
+				image = result.secure_url + ' ' + result.public_id;
 				let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
 
 				if (gif.rows.length > 0) {
@@ -112,12 +113,21 @@ class gifController {
 			const gifId = parseInt(req.params.gifId, 10);
 			const deletedGif = await pool.query(deleteGifById, [ gifId ]);
 			if (deletedGif.rows.length > 0) {
-				await cloudinary.v2.api.delete_resources([ deletedGif.rows[0].imageUrl ]);
-				return res.status(201).json({
-					status: 'success',
-					data: {
-						message: 'Gif successfully deleted'
+				const public_Id = deletedGif.rows[0].imageUrl.split(' ')[1];
+				console.log(public_Id);
+				cloudinary.v2.api.delete_resources([ public_Id ], (err, result) => {
+					if (err) {
+						return res.status(501).json({
+							status: 'error',
+							error: 'Could not delete gif from server'
+						});
 					}
+					return res.status(201).json({
+						status: 'success',
+						data: {
+							message: 'Gif successfully deleted'
+						}
+					});
 				});
 			}
 			return res.status(404).json({
@@ -165,7 +175,7 @@ class gifController {
 									message: 'Comment successfully created',
 									createdOn: createdOn,
 									gifTitle: title,
-									imageUrl: imageUrl,
+									imageUrl: imageUrl.split(' '),
 									comment: comment
 								}
 							});

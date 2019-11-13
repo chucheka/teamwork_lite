@@ -4,10 +4,7 @@ let connect;
 switch (process.env.NODE_ENV) {
 	case 'test':
 		connect = {
-			connectionString: process.env.DB_DEV,
-			max: 50, // set pool max size to 50
-			idleTimeoutMillis: 600000,
-			connectionTimeoutMillis: 6000
+			connectionString: process.env.DB_DEV
 		};
 		break;
 	case 'production':

@@ -1,6 +1,6 @@
 import { user } from '../objects';
 
-export const userTable = `
+export const userTable = `DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE users(
     "userId" SERIAL PRIMARY KEY NOT NULL,
 	"firstName" VARCHAR(255) NOT NULL,
