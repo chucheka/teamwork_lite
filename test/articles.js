@@ -7,7 +7,7 @@ const { expect } = chai;
 
 chai.use(chaiHttp);
 
-describe.skip('Articles Endpoints', () => {
+describe('Articles Endpoints', () => {
 	const articleItem = {
 		title: 'Article created by test file',
 		article: 'React dhhfhhfhhfhfhfhhffhhf'

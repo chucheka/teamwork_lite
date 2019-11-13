@@ -1,7 +1,6 @@
 import { gifObj } from '../objects';
-
-export const gifsTable = `DROP TABLE IF EXISTS gifs CASCADE;
-CREATE TABLE gifs(
+export const dropGifTable = 'DROP TABLE IF EXISTS gifs CASCADE';
+export const gifsTable = `CREATE TABLE gifs(
     "gifId" SERIAL PRIMARY KEY NOT NULL,
     "createdOn" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     "imageUrl" VARCHAR(255) NOT NULL,

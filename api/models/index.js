@@ -1,8 +1,8 @@
 import pool from '../config/pool';
 import { userTable, createUserQuery, dropUserTable } from './users/sql';
-import { articlesTable, createArticleQuery } from './articles/sql';
-import { gifsTable, createGifsQuery } from './gifs/sql';
-import { commentsTable, createCommentQuery } from './comments/sql';
+import { articlesTable, createArticleQuery, dropArticleTable } from './articles/sql';
+import { gifsTable, createGifsQuery, dropGifTable } from './gifs/sql';
+import { commentsTable, createCommentQuery, dropCommentTable } from './comments/sql';
 async function createTable(queryText, tableName) {
 	try {
 		const response = await pool.query(queryText);
@@ -27,18 +27,14 @@ async function queryRunner(queryText, queryValue) {
 		console.log(error.stack);
 	}
 }
-
-// const arrayOfQueries = [ userTable, articlesTable, gifsTable, commentsTable ];
-// arrayOfQueries.forEach((query) => {
-// 	setTimeout(() => {
-// 		createTable(query, 'User');
-// 	}, 20000);
-// });
 dropTable(dropUserTable, 'User');
 createTable(userTable, 'User');
-// createTable(articlesTable, 'Artilce');
-// createTable(gifsTable, 'Gif');
-// createTable(commentsTable, 'Comment');
+dropTable(dropArticleTable, 'Articles');
+createTable(articlesTable, 'Artilces');
+dropTable(dropGifTable, 'Gifs');
+createTable(gifsTable, 'Gifs');
+dropTable(dropCommentTable, 'Comments');
+createTable(commentsTable, 'Comments');
 // queryRunner(createUserQuery.createUser, createUserQuery.userValues);
 // queryRunner(createArticleQuery.createArticle, createArticleQuery.articleValues);
 // queryRunner(createGifsQuery.createGif, createGifsQuery.gifValues);
