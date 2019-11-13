@@ -5,7 +5,7 @@ export const gifsTable = `CREATE TABLE gifs(
     "createdOn" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     "imageUrl" VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
-    flagged BOOLEAN DEFAULT false, 
+    flagged BOOLEAN DEFAULT false 
 )`;
 export const searchGifById = `SELECT * FROM gifs WHERE "gifId" = $1`;
 export const deleteGifById = `DELETE FROM gifs WHERE "gifId" = $1 RETURNING *`;
