@@ -7,10 +7,11 @@ const { expect } = chai;
 
 chai.use(chaiHttp);
 
-describe.skip('Articles Endpoints', () => {
+describe('Articles Endpoints', () => {
 	const articleItem = {
 		title: 'Article created by test file',
-		article: 'React dhhfhhfhhfhfhfhhffhhf'
+		article: 'React dhhfhhfhhfhfhfhhffhhf',
+		tag: 'politics'
 	};
 
 	beforeEach('Create an article', (done) => {
@@ -76,7 +77,7 @@ describe.skip('Articles Endpoints', () => {
 					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
-					expect(res.body.data).to.include.all.keys('id', 'createdOn', 'title', 'article', 'comments');
+					expect(res.body.data).to.include.any.keys('id', 'createdOn', 'title', 'article', 'comments');
 					expect(res.body.data.comments).to.be.an('array');
 					done();
 				})
@@ -144,6 +145,26 @@ describe.skip('Articles Endpoints', () => {
 				});
 		});
 	});
+	describe('PATCH /api/v1/articles/:articleId', () => {
+		let articleId = 1;
+		it('Should be able to flag a article as inapropriate', (done) => {
+			chai
+				.request(app)
+				.patch(`/api/v1/articles/${articleId}/flag`)
+				.set('authorization', token)
+				.then((res) => {
+					expect(res).to.have.status(201);
+					expect(res.body).to.be.an('object');
+					expect(res.body).to.have.property('status', 'success');
+					expect(res.body).to.have.property('data');
+					expect(res.body.data).to.have.property('message', 'Article has been flagged as inapropriate');
+					done();
+				})
+				.catch((err) => {
+					done(err);
+				});
+		});
+	});
 	describe('DELETE /api/v1/articles/:articleId', () => {
 		it.skip('Should delete an article with give articleId', (done) => {
 			let articleId = 1;
@@ -180,8 +201,8 @@ describe.skip('Articles Endpoints', () => {
 				});
 		});
 	});
-	describe.skip('POST /api/v1/articles/:articleId/comment', () => {
-		it('Users should be able to post comments on an article', (done) => {
+	describe('POST /api/v1/articles/:articleId/comment', () => {
+		it.skip('Users should be able to post comments on an article', (done) => {
 			let articleId = 1;
 			chai
 				.request(app)
@@ -196,7 +217,7 @@ describe.skip('Articles Endpoints', () => {
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
 					expect(res.body.data).to.have.property('message', 'Comment successfully created');
-					expect(res.body.data).to.include.all.keys(
+					expect(res.body.data).to.include.any.keys(
 						'message',
 						'createdOn',
 						'articleTitle',
@@ -212,27 +233,54 @@ describe.skip('Articles Endpoints', () => {
 				});
 		});
 	});
+	describe.skip('GET /api/v1/articles?tag=tagName', () => {
+		const tagName = 'politics';
+		it('Should be able to get all articles and/or gifs with a particular tag', (done) => {
+			chai
+				.request(app)
+				.get('/api/v1/articles')
+				.query({ tag: tagName })
+				.set('authorization', token)
+				.then((res) => {
+					expect(res).to.have.status(200);
+					expect(res.body).to.be.an('object');
+					expect(res.body).to.have.property('status', 'success');
+					expect(res.body).to.have.property('data').which.is('array');
+					expect(res.body.data[0]).to.be.an('object');
+					expect(res.body.data[0]).to.include.any.keys(
+						'id',
+						'createdOn',
+						'title',
+						'article',
+						'url',
+						'authourId'
+					);
+					done();
+				})
+				.catch((err) => {
+					done(err);
+				});
+		});
+		it('Should be empty is there are no articles/gifs with tagName', (done) => {
+			let tagName = 'sex';
+			chai
+				.request(app)
+				.get('/api/v1/articles')
+				.query({ tag: tagName })
+				.set('authorization', token)
+				.then((res) => {
+					expect(res).to.have.status(404);
+					expect(res.body).to.be.an('object');
+					expect(res.body).to.have.property('status', 'error');
+					expect(res.body).to.have.property('error', 'No articles in this category');
+					done();
+				})
+				.catch((err) => {
+					done(err);
+				});
+		});
+	});
 
-	// describe.only('PATCH /api/v1/articles/:articleId', () => {
-	// 	it('Should be able to flag a article as inapropriate', (done) => {
-	// 		chai
-	// 			.request(app)
-	// 			.patch(`/api/v1/articles/${articleId}`)
-	// 			.query({ flagged: true })
-	// 			.set('authorization', token)
-	// 			.then((res) => {
-	// 				expect(res).to.have.status(201);
-	// 				expect(res.body).to.be.an('object');
-	// 				expect(res.body).to.have.property('status', 'success');
-	// 				expect(res.body).to.have.property('data');
-	// 				expect(res.body.data).to.have.property('message', 'Article has been flagged as inapropriate');
-	// 				done();
-	// 			})
-	// 			.catch((err) => {
-	// 				done(err);
-	// 			});
-	// 	});
-	// });
 	// describe.skip('Delete /api/v1/articles/:articleId', () => {
 	// 	it('Should be able to delete article(s) flagged as inapropriate', (done) => {
 	// 		chai

@@ -1,8 +1,8 @@
 import pool from '../config/pool';
-import { userTable, createUserQuery, dropUserTable } from './users/sql';
-import { articlesTable, createArticleQuery } from './articles/sql';
-import { gifsTable, createGifsQuery } from './gifs/sql';
-import { commentsTable, createCommentQuery } from './comments/sql';
+import { userTable } from './users/sql';
+import { articlesTable } from './articles/sql';
+import { gifsTable } from './gifs/sql';
+
 async function createTable(queryText, tableName) {
 	try {
 		const response = await pool.query(queryText);
@@ -11,34 +11,15 @@ async function createTable(queryText, tableName) {
 		console.log(error.stack);
 	}
 }
-async function dropTable(queryText, tableName) {
-	try {
-		const response = await pool.query(queryText);
-		console.log(`${tableName} table has be dropped`);
-	} catch (error) {
-		console.log(error.stack);
-	}
-}
 
-async function queryRunner(queryText, queryValue) {
-	try {
-		const result = await pool.query(queryText, queryValue);
-	} catch (error) {
-		console.log(error.stack);
-	}
-}
+// async function queryRunner(queryText, queryValue) {
+// 	try {
+// 		const result = await pool.query(queryText, queryValue);
+// 	} catch (error) {
+// 		console.log(error.stack);
+// 	}
+// }
 
-// const arrayOfQueries = [ userTable, articlesTable, gifsTable, commentsTable ];
-// arrayOfQueries.forEach((query) => {
-// 	setTimeout(() => {
-// 		createTable(query, 'User');
-// 	}, 20000);
-// });
-dropTable(dropUserTable, 'User');
 createTable(userTable, 'User');
-// createTable(articlesTable, 'Artilce');
-// createTable(gifsTable, 'Gif');
-// createTable(commentsTable, 'Comment');
-// queryRunner(createUserQuery.createUser, createUserQuery.userValues);
-// queryRunner(createArticleQuery.createArticle, createArticleQuery.articleValues);
-// queryRunner(createGifsQuery.createGif, createGifsQuery.gifValues);
+createTable(articlesTable, 'Articles');
+createTable(gifsTable, 'Gifs');

@@ -211,6 +211,11 @@ class articlesController {
 										comment: comment
 									}
 								});
+							} else {
+								return res.status(500).json({
+									status: 'error',
+									error: 'Comment not posted'
+								});
 							}
 						});
 				} else {
@@ -239,8 +244,13 @@ class articlesController {
 								return res.status(201).json({
 									status: 'success',
 									data: {
-										message: 'article has been flagged as inappropriate'
+										message: 'Article has been flagged as inapropriate'
 									}
+								});
+							} else {
+								return res.status(500).json({
+									status: 'error',
+									error: 'Article not flagged'
 								});
 							}
 						})
@@ -308,6 +318,11 @@ class articlesController {
 										message: 'comment has been flagged as inappropriate'
 									}
 								});
+							} else {
+								return res.status(500).json({
+									status: 'error',
+									error: 'Internal server error'
+								});
 							}
 						})
 						.catch((err) => {
@@ -339,7 +354,7 @@ class articlesController {
 			} else {
 				res.status(404).json({
 					status: 'error',
-					error: 'Not articles in this category'
+					error: 'No articles in this category'
 				});
 			}
 		} catch (error) {

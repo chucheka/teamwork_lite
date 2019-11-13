@@ -74,7 +74,7 @@ class gifController {
 				const result = await cloudinary.v2.uploader.upload(req.file.path, {
 					public_id: `imageUploads/${req.file.originalname}`,
 					use_filename: true,
-					unique_filename: false
+					unique_filename: true
 				});
 				image = result.secure_url + ' ' + result.public_id;
 				let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
@@ -116,26 +116,26 @@ class gifController {
 			const deletedGif = await pool.query(deleteGifById, [ gifId ]);
 			if (deletedGif.rows.length > 0) {
 				const public_Id = deletedGif.rows[0].imageUrl.split(' ')[1];
-				console.log(public_Id);
+
 				cloudinary.v2.api.delete_resources([ public_Id ], (err, result) => {
-					if (err) {
-						return res.status(501).json({
-							status: 'error',
-							error: 'Could not delete gif from server'
+					if (result) {
+						return res.status(201).json({
+							status: 'success',
+							data: {
+								message: 'Gif successfully deleted'
+							}
 						});
 					}
-					return res.status(201).json({
-						status: 'success',
-						data: {
-							message: 'Gif successfully deleted'
-						}
-					});
+					if (err) {
+						throw err;
+					}
+				});
+			} else {
+				return res.status(404).json({
+					status: 'error',
+					error: 'Gif not found'
 				});
 			}
-			return res.status(404).json({
-				status: 'error',
-				error: 'Gif not found'
-			});
 		} catch (error) {
 			console.log(error);
 		}
@@ -179,9 +179,14 @@ class gifController {
 										message: 'Comment successfully created',
 										createdOn: createdOn,
 										gifTitle: title,
-										imageUrl: imageUrl.split(' '),
+										imageUrl: imageUrl.split(' ')[0],
 										comment: comment
 									}
+								});
+							} else {
+								return res.status(500).json({
+									status: 'error',
+									error: err.message
 								});
 							}
 						})

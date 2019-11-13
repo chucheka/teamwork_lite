@@ -1,15 +1,14 @@
 import { articleObj } from '../objects';
 
-export const articlesTable = `DROP TABLE IF EXISTS articles CASCADE;
-CREATE TABLE articles(
+export const dropArticleTable = 'DROP TABLE IF EXISTS articles CASCADE';
+export const articlesTable = `CREATE TABLE articles(
     "articleId" SERIAL PRIMARY KEY NOT NULL,
    "createdOn" TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     article VARCHAR(255) NOT NULL,
     title VARCHAR(255) NOT NULL,
     flagged BOOLEAN DEFAULT false,
     tag VARCHAR(30) NULL
-)
-`;
+)`;
 
 const createArticle = `INSERT INTO articles(article,title,tag) VALUES($1,$2,$3) RETURNING *`;
 const articleValues = [ articleObj.article, articleObj.title, articleObj.tag ];

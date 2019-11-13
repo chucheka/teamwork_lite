@@ -5,7 +5,7 @@ import app from '../api/app';
 const { expect } = chai;
 
 chai.use(chaiHttp);
-describe.only('Auth User', () => {
+describe('Auth User', () => {
 	describe('POST /api/v1/auth/create_user', () => {
 		const user = {
 			firstName: 'Chike',

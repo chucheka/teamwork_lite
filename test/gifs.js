@@ -8,7 +8,7 @@ import { createCommentQuery } from '../api/models/comments/sql';
 
 const { expect } = chai;
 chai.use(chaiHttp);
-describe.skip('Gifs Endpoints', () => {
+describe('Gifs Endpoints', () => {
 	const gif = {
 		title: 'Complete Guide to React'
 	};
@@ -110,7 +110,7 @@ describe.skip('Gifs Endpoints', () => {
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
 					expect(res.body.data).to.have.property('message', 'Comment successfully created');
-					expect(res.body.data).to.include.all.keys(
+					expect(res.body.data).to.include.any.keys(
 						'message',
 						'createdOn',
 						'gifTitle',
