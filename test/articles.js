@@ -146,11 +146,11 @@ describe('Articles Endpoints', () => {
 		});
 	});
 	describe('PATCH /api/v1/articles/:articleId', () => {
+		let articleId = 1;
 		it('Should be able to flag a article as inapropriate', (done) => {
 			chai
 				.request(app)
-				.patch(`/api/v1/articles/${articleId}`)
-				.query({ flagged: true })
+				.patch(`/api/v1/articles/${articleId}/flag`)
 				.set('authorization', token)
 				.then((res) => {
 					expect(res).to.have.status(201);

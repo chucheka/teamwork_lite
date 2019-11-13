@@ -211,6 +211,11 @@ class articlesController {
 										comment: comment
 									}
 								});
+							} else {
+								return res.status(500).json({
+									status: 'error',
+									error: 'Comment not posted'
+								});
 							}
 						});
 				} else {
@@ -241,6 +246,11 @@ class articlesController {
 									data: {
 										message: 'article has been flagged as inappropriate'
 									}
+								});
+							} else {
+								return res.status(500).json({
+									status: 'error',
+									error: 'Article not flagged'
 								});
 							}
 						})
@@ -307,6 +317,11 @@ class articlesController {
 									data: {
 										message: 'comment has been flagged as inappropriate'
 									}
+								});
+							} else {
+								return res.status(500).json({
+									status: 'error',
+									error: 'Internal server error'
 								});
 							}
 						})
