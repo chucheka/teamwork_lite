@@ -8,8 +8,7 @@ export const articlesTable = `CREATE TABLE articles(
     title VARCHAR(255) NOT NULL,
     flagged BOOLEAN DEFAULT false,
     tag VARCHAR(30) NULL
-)
-`;
+)`;
 
 const createArticle = `INSERT INTO articles(article,title,tag) VALUES($1,$2,$3) RETURNING *`;
 const articleValues = [ articleObj.article, articleObj.title, articleObj.tag ];

@@ -10,8 +10,7 @@ export const commentsTable = `CREATE TABLE comments(
     FOREIGN KEY ("articleId") REFERENCES articles("articleId") ON DELETE CASCADE,
     FOREIGN KEY ("gifId") REFERENCES gifs("gifId") ON DELETE CASCADE,
     flagged BOOLEAN DEFAULT false
-)
-`;
+)`;
 
 const createComment = `INSERT INTO comments("authourId","articleId","gifId",comment) VALUES($1,$2,$3,$4) RETURNING *`;
 
