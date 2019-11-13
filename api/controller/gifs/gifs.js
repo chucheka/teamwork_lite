@@ -27,7 +27,6 @@ class gifController {
 			.then((result) => {
 				if (result.rows.length > 0) {
 					const { gifId, createdOn, title, imageUrl } = result.rows[0];
-					console.log(imageUrl);
 					pool
 						.query(commentsByGifId, [ gifId ])
 						.then((resultCom) => {
@@ -72,7 +71,6 @@ class gifController {
 				});
 			}
 			if (req.file) {
-				// console.log(req.file.path);
 				const result = await cloudinary.v2.uploader.upload(req.file.path, {
 					public_id: `imageUploads/${req.file.originalname}`,
 					use_filename: true,
@@ -94,13 +92,17 @@ class gifController {
 						}
 					});
 				}
+			} else {
+				return res.status(400).jsonn({
+					status: 'error',
+					error: 'No file attached'
+				});
 			}
 		} catch (error) {
 			return res.status(500).json({
 				status: 'error',
 				error: error.message
 			});
-			console.log(error);
 		}
 	}
 
@@ -166,21 +168,29 @@ class gifController {
 				if (result.rows.length > 0) {
 					const { createdOn, imageUrl, title } = result.rows[0];
 					// Create the comment and attach it to the response body
-					pool.query(createCommentQuery.createComment, [ userId, , gifId, comment ]).then((commentRow) => {
-						if (commentRow.rows.length > 0) {
-							const { comment } = commentRow.rows[0];
-							return res.status(201).json({
-								status: 'success',
-								data: {
-									message: 'Comment successfully created',
-									createdOn: createdOn,
-									gifTitle: title,
-									imageUrl: imageUrl.split(' '),
-									comment: comment
-								}
+					pool
+						.query(createCommentQuery.createComment, [ userId, , gifId, comment ])
+						.then((commentRow) => {
+							if (commentRow.rows.length > 0) {
+								const { comment } = commentRow.rows[0];
+								return res.status(201).json({
+									status: 'success',
+									data: {
+										message: 'Comment successfully created',
+										createdOn: createdOn,
+										gifTitle: title,
+										imageUrl: imageUrl.split(' '),
+										comment: comment
+									}
+								});
+							}
+						})
+						.catch((err) => {
+							return res.status(500).json({
+								status: 'error',
+								error: err.message
 							});
-						}
-					});
+						});
 				} else {
 					return res.status(404).json({
 						status: 'error',
