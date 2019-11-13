@@ -339,7 +339,7 @@ class articlesController {
 			} else {
 				res.status(404).json({
 					status: 'error',
-					error: 'Not articles in this category'
+					error: 'No articles in this category'
 				});
 			}
 		} catch (error) {
