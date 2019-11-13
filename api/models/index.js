@@ -31,7 +31,8 @@ async function queryRunner(queryText, queryValue) {
 const queries = [
 	[ dropUserTable, userTable, 'User' ],
 	[ dropArticleTable, articlesTable, 'Articles' ],
-	[ dropGifTable, gifsTable, 'Gifs' ][(dropCommentTable, commentsTable, 'Comments')]
+	[ dropGifTable, gifsTable, 'Gifs' ],
+	[ (dropCommentTable, commentsTable, 'Comments') ]
 ];
 
 function initializer(queries) {
