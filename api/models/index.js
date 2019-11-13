@@ -31,12 +31,12 @@ async function queryRunner(queryText, queryValue) {
 const queries = [
 	[ dropUserTable, userTable, 'User' ],
 	[ dropArticleTable, articlesTable, 'Articles' ],
-	[ dropCommentTable, commentsTable, 'Comments' ]
+	[ dropGifTable, gifsTable, 'Gifs' ][(dropCommentTable, commentsTable, 'Comments')]
 ];
 
 function initializer(arr) {
 	arr.forEach((item) => {
-		setInterval(() => {
+		setTimeout(() => {
 			dropTable(item[0], item[2]);
 			createTable(item[1], item[2]);
 		}, 20000);
