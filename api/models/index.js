@@ -11,14 +11,6 @@ async function createTable(queryText, tableName) {
 		console.log(error.stack);
 	}
 }
-async function dropTable(queryText, tableName) {
-	try {
-		const response = await pool.query(queryText);
-		console.log(`${tableName} table has be dropped`);
-	} catch (error) {
-		console.log(error.stack);
-	}
-}
 
 async function queryRunner(queryText, queryValue) {
 	try {
@@ -28,29 +20,10 @@ async function queryRunner(queryText, queryValue) {
 	}
 }
 
-// const queries = [
-// 	[ dropUserTable, userTable, 'User' ],
-// 	[ dropArticleTable, articlesTable, 'Articles' ],
-// 	[ dropGifTable, gifsTable, 'Gifs' ],
-// 	[ (dropCommentTable, commentsTable, 'Comments') ]
-// ];
-
-// const initializer = function(queries) {
-// 	queries.forEach((item) => {
-// 		setTimeout((item) => {
-// 			dropTable(item[0], item[2]);
-// 			createTable(item[1], item[2]);
-// 		}, 20000);
-// 	});
-// };
-// dropTable(dropUserTable, 'User');
 createTable(userTable, 'User');
-// dropTable(dropArticleTable, 'Articles');
+
 createTable(articlesTable, 'Artilces');
-// dropTable(dropGifTable, 'Gifs');
+
 createTable(gifsTable, 'Gifs');
-// dropTable(dropCommentTable, 'Comments');
+
 createTable(commentsTable, 'Comments');
-// queryRunner(createUserQuery.createUser, createUserQuery.userValues);
-// queryRunner(createArticleQuery.createArticle, createArticleQuery.articleValues);
-// queryRunner(createGifsQuery.createGif, createGifsQuery.gifValues);

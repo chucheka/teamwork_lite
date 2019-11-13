@@ -12,7 +12,8 @@
 		"build": "npm run clean && babel api --out-dir src",
 		"coverage": "nyc report --reporter=text-lcov | coveralls",
 		"createTables": "babel-node ./api/models/index.js",
-		"migration": "npm run createTables"
+		"dropTables": "babel-node ./api/models/dropTables.js",
+		"migration": "npm run dropTables && npm run createTables"
 	},
 	"engines": {
 		"node": "8.11.2"
