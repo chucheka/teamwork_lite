@@ -244,7 +244,7 @@ class articlesController {
 								return res.status(201).json({
 									status: 'success',
 									data: {
-										message: 'article has been flagged as inappropriate'
+										message: 'Article has been flagged as inapropriate'
 									}
 								});
 							} else {
