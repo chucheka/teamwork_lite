@@ -28,31 +28,31 @@ async function queryRunner(queryText, queryValue) {
 	}
 }
 
-const queries = [
-	[ dropUserTable, userTable, 'User' ],
-	[ dropArticleTable, articlesTable, 'Articles' ],
-	[ dropGifTable, gifsTable, 'Gifs' ],
-	[ (dropCommentTable, commentsTable, 'Comments') ]
-];
+// const queries = [
+// 	[ dropUserTable, userTable, 'User' ],
+// 	[ dropArticleTable, articlesTable, 'Articles' ],
+// 	[ dropGifTable, gifsTable, 'Gifs' ],
+// 	[ (dropCommentTable, commentsTable, 'Comments') ]
+// ];
 
-const initializer = function(queries) {
-	queries.forEach((item) => {
-		setTimeout((item) => {
-			dropTable(item[0], item[2]);
-			createTable(item[1], item[2]);
-		}, 20000);
-	});
-};
+// const initializer = function(queries) {
+// 	queries.forEach((item) => {
+// 		setTimeout((item) => {
+// 			dropTable(item[0], item[2]);
+// 			createTable(item[1], item[2]);
+// 		}, 20000);
+// 	});
+// };
 
 initializer(queries);
-// dropTable(dropUserTable, 'User');
-// createTable(userTable, 'User');
-// dropTable(dropArticleTable, 'Articles');
-// createTable(articlesTable, 'Artilces');
-// dropTable(dropGifTable, 'Gifs');
-// createTable(gifsTable, 'Gifs');
-// dropTable(dropCommentTable, 'Comments');
-// createTable(commentsTable, 'Comments');
+dropTable(dropUserTable, 'User');
+createTable(userTable, 'User');
+dropTable(dropArticleTable, 'Articles');
+createTable(articlesTable, 'Artilces');
+dropTable(dropGifTable, 'Gifs');
+createTable(gifsTable, 'Gifs');
+dropTable(dropCommentTable, 'Comments');
+createTable(commentsTable, 'Comments');
 // queryRunner(createUserQuery.createUser, createUserQuery.userValues);
 // queryRunner(createArticleQuery.createArticle, createArticleQuery.articleValues);
 // queryRunner(createGifsQuery.createGif, createGifsQuery.gifValues);
