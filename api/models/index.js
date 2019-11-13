@@ -1,8 +1,8 @@
 import pool from '../config/pool';
-import { userTable, createUserQuery, dropUserTable } from './users/sql';
-import { articlesTable, createArticleQuery, dropArticleTable } from './articles/sql';
-import { gifsTable, createGifsQuery, dropGifTable } from './gifs/sql';
-import { commentsTable, createCommentQuery, dropCommentTable } from './comments/sql';
+import { userTable } from './users/sql';
+import { articlesTable } from './articles/sql';
+import { gifsTable } from './gifs/sql';
+
 async function createTable(queryText, tableName) {
 	try {
 		const response = await pool.query(queryText);
@@ -21,9 +21,5 @@ async function createTable(queryText, tableName) {
 // }
 
 createTable(userTable, 'User');
-
-createTable(articlesTable, 'Artilces');
-
+createTable(articlesTable, 'Articles');
 createTable(gifsTable, 'Gifs');
-
-createTable(commentsTable, 'Comments');

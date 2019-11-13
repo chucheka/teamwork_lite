@@ -110,7 +110,7 @@ describe('Gifs Endpoints', () => {
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
 					expect(res.body.data).to.have.property('message', 'Comment successfully created');
-					expect(res.body.data).to.include.all.keys(
+					expect(res.body.data).to.include.any.keys(
 						'message',
 						'createdOn',
 						'gifTitle',
