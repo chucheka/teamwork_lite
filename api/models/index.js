@@ -34,9 +34,9 @@ const queries = [
 	[ dropGifTable, gifsTable, 'Gifs' ][(dropCommentTable, commentsTable, 'Comments')]
 ];
 
-function initializer(arr) {
+function initializer(queries) {
 	arr.forEach((item) => {
-		setTimeout(() => {
+		setTimeout((item) => {
 			dropTable(item[0], item[2]);
 			createTable(item[1], item[2]);
 		}, 20000);
