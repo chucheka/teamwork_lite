@@ -6,7 +6,7 @@ const { expect } = chai;
 
 chai.use(chaiHttp);
 
-describe.skip('GET /api/v1/feed', () => {
+describe('GET /api/v1/feed', () => {
 	it('Should get all articles and  gifs', (done) => {
 		chai
 			.request(app)

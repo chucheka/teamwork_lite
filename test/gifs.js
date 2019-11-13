@@ -8,7 +8,7 @@ import { createCommentQuery } from '../api/models/comments/sql';
 
 const { expect } = chai;
 chai.use(chaiHttp);
-describe.skip('Gifs Endpoints', () => {
+describe('Gifs Endpoints', () => {
 	const gif = {
 		title: 'Complete Guide to React'
 	};

@@ -12,13 +12,13 @@ async function createTable(queryText, tableName) {
 	}
 }
 
-async function queryRunner(queryText, queryValue) {
-	try {
-		const result = await pool.query(queryText, queryValue);
-	} catch (error) {
-		console.log(error.stack);
-	}
-}
+// async function queryRunner(queryText, queryValue) {
+// 	try {
+// 		const result = await pool.query(queryText, queryValue);
+// 	} catch (error) {
+// 		console.log(error.stack);
+// 	}
+// }
 
 createTable(userTable, 'User');
 
