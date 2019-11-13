@@ -27,14 +27,31 @@ async function queryRunner(queryText, queryValue) {
 		console.log(error.stack);
 	}
 }
-dropTable(dropUserTable, 'User');
-createTable(userTable, 'User');
-dropTable(dropArticleTable, 'Articles');
-createTable(articlesTable, 'Artilces');
-dropTable(dropGifTable, 'Gifs');
-createTable(gifsTable, 'Gifs');
-dropTable(dropCommentTable, 'Comments');
-createTable(commentsTable, 'Comments');
+
+const queries = [
+	[ dropUserTable, userTable, 'User' ],
+	[ dropArticleTable, articlesTable, 'Articles' ],
+	[ dropCommentTable, commentsTable, 'Comments' ]
+];
+
+function initializer(arr) {
+	arr.forEach((item) => {
+		setInterval(() => {
+			dropTable(item[0], item[2]);
+			createTable(item[1], item[2]);
+		}, 20000);
+	});
+}
+
+initializer(queries);
+// dropTable(dropUserTable, 'User');
+// createTable(userTable, 'User');
+// dropTable(dropArticleTable, 'Articles');
+// createTable(articlesTable, 'Artilces');
+// dropTable(dropGifTable, 'Gifs');
+// createTable(gifsTable, 'Gifs');
+// dropTable(dropCommentTable, 'Comments');
+// createTable(commentsTable, 'Comments');
 // queryRunner(createUserQuery.createUser, createUserQuery.userValues);
 // queryRunner(createArticleQuery.createArticle, createArticleQuery.articleValues);
 // queryRunner(createGifsQuery.createGif, createGifsQuery.gifValues);
