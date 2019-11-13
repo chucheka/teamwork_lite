@@ -10,7 +10,8 @@ chai.use(chaiHttp);
 describe('Articles Endpoints', () => {
 	const articleItem = {
 		title: 'Article created by test file',
-		article: 'React dhhfhhfhhfhfhfhhffhhf'
+		article: 'React dhhfhhfhhfhfhfhhffhhf',
+		tag: 'politics'
 	};
 
 	beforeEach('Create an article', (done) => {
@@ -76,7 +77,7 @@ describe('Articles Endpoints', () => {
 					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
-					expect(res.body.data).to.include.all.keys('id', 'createdOn', 'title', 'article', 'comments');
+					expect(res.body.data).to.include.any.keys('id', 'createdOn', 'title', 'article', 'comments');
 					expect(res.body.data.comments).to.be.an('array');
 					done();
 				})
