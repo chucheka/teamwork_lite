@@ -43,13 +43,13 @@ async function queryRunner(queryText, queryValue) {
 // 		}, 20000);
 // 	});
 // };
-dropTable(dropUserTable, 'User');
+// dropTable(dropUserTable, 'User');
 createTable(userTable, 'User');
-dropTable(dropArticleTable, 'Articles');
+// dropTable(dropArticleTable, 'Articles');
 createTable(articlesTable, 'Artilces');
-dropTable(dropGifTable, 'Gifs');
+// dropTable(dropGifTable, 'Gifs');
 createTable(gifsTable, 'Gifs');
-dropTable(dropCommentTable, 'Comments');
+// dropTable(dropCommentTable, 'Comments');
 createTable(commentsTable, 'Comments');
 // queryRunner(createUserQuery.createUser, createUserQuery.userValues);
 // queryRunner(createArticleQuery.createArticle, createArticleQuery.articleValues);
