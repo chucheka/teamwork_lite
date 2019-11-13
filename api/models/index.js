@@ -43,8 +43,6 @@ async function queryRunner(queryText, queryValue) {
 // 		}, 20000);
 // 	});
 // };
-
-initializer(queries);
 dropTable(dropUserTable, 'User');
 createTable(userTable, 'User');
 dropTable(dropArticleTable, 'Articles');
