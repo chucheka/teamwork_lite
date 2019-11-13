@@ -21,50 +21,52 @@ class userController {
 		pool
 			.query(checkEmail, [ email ])
 			.then((result) => {
-				if (result.rowCount >= 1) {
+				if (result.rows.length > 0) {
 					return res.status(400).json({
 						status: 'error',
 						error: 'Email already taken!!'
+					});
+				} else {
+					bcrypt.genSalt(10, (err, salt) => {
+						//Hash Password of user and generate token
+						bcrypt.hash(password, salt, (err, hash) => {
+							if (err) throw err;
+							const values = [ firstName, lastName, email, hash, gender, jobRole, department, address ];
+							pool
+								.query(createUserQuery.createUser, values)
+								.then((result) => {
+									if (result.rowCount === 1) {
+										const { userId, firstName, lastName, email } = result.rows[0];
+										const payload = {
+											userId,
+											firstName,
+											lastName,
+											userName:
+												firstName === 'Chike' && lastName === 'Ucheka' ? 'Admin' : firstName,
+											email
+										};
+										jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '7d' }, (err, token) => {
+											res.status(201).json({
+												status: 'success',
+												data: {
+													message: 'User account successfully created',
+													token,
+													userId
+												}
+											});
+										});
+									}
+								})
+								.catch((err) => {
+									console.log(err.stack);
+								});
+						});
 					});
 				}
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-		//Hash Password of user and generate token
-		bcrypt.genSalt(10, (err, salt) => {
-			bcrypt.hash(password, salt, (err, hash) => {
-				if (err) throw err;
-				const values = [ firstName, lastName, email, hash, gender, jobRole, department, address ];
-				pool
-					.query(createUserQuery.createUser, values)
-					.then((result) => {
-						if (result.rowCount === 1) {
-							const { userId, firstName, lastName, email } = result.rows[0];
-							const payload = {
-								userId,
-								firstName,
-								lastName,
-								userName: firstName === 'Chike' && lastName === 'Ucheka' ? 'Admin' : firstName,
-								email
-							};
-							jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '7d' }, (err, token) => {
-								res.status(201).json({
-									status: 'success',
-									data: {
-										message: 'User account successfully created',
-										token,
-										userId
-									}
-								});
-							});
-						}
-					})
-					.catch((err) => {
-						console.log(err.stack);
-					});
-			});
-		});
 	}
 
 	static signInUser(req, res, next) {
