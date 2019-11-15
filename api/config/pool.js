@@ -1,5 +1,7 @@
 import { Pool } from 'pg';
-import 'dotenv/config';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 let connect;
 
@@ -20,8 +22,7 @@ switch (process.env.NODE_ENV) {
 		break;
 	case 'production':
 		connect = {
-			connectionString:
-				'postgres://fkwmtzne:ZwQ4T-jaE_01FoSlFlil6v2neJx9gxXs@otto.db.elephantsql.com:5432/fkwmtzne'
+			connectionString: process.env.PROD_DEV
 		};
 		break;
 	default:
