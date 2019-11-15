@@ -21,7 +21,6 @@ describe('Articles Endpoints', () => {
 			.set('authorization', token)
 			.send(articleItem)
 			.then((res) => {
-				expect(res).to.have.status(201);
 				done();
 			})
 			.catch((err) => {
