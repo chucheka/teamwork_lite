@@ -19,4 +19,10 @@ script:
   - npm run test
 after_script: 
   - npm run coverage
-  
+deploy:
+  provider: heroku
+  api_key:
+    production:
+      secure: "bbc9447f-e674-46d9-b55b-8eafc2b2d284"
+  app:
+    develop: teamwork-lite
