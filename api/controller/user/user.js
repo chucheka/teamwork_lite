@@ -55,7 +55,7 @@ class userController {
 											lastName,
 											email
 										};
-										jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '7d' }, (err, token) => {
+										jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '366d' }, (err, token) => {
 											res.status(201).json({
 												status: 'success',
 												data: {
@@ -118,7 +118,7 @@ class userController {
 								userName: isAdmin ? process.ADMIN_USERNAME : firstName,
 								email
 							};
-							jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '366`d' }, (err, token) => {
+							jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '366d' }, (err, token) => {
 								if (err) throw err;
 								if (!isAdmin) {
 									return res.status(200).json({
