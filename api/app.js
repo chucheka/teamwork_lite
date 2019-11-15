@@ -14,7 +14,7 @@ dotenv.config();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-const port = process.env.PORT || 3040;
+const port = process.env.PORT || 3000;
 
 app.use((req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*');
