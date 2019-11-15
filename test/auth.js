@@ -10,7 +10,7 @@ describe('Auth User', () => {
 		const user = {
 			firstName: 'Chike',
 			lastName: 'Ucheka',
-			email: 'ryanucheka22@gmail.com',
+			email: 'ryanucheka@gmail.com',
 			password: 'chike22ucheka',
 			password2: 'chike22ucheka',
 			gender: 'Male',
@@ -25,13 +25,12 @@ describe('Auth User', () => {
 				.set('content-type', 'application/json')
 				.send(user)
 				.then((res) => {
-					console.log(res.body.data.token);
 					expect(res).to.have.status(201);
 					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
-					expect(res.body).to.include.all.keys('status', 'data');
+					expect(res.body).to.include.any.keys('status', 'data');
 					expect(res.body.data).to.be.an('object');
-					expect(res.body.data).to.include.all.keys('message', 'token', 'userId');
+					expect(res.body.data).to.include.any.keys('message', 'token', 'userId');
 					done();
 				})
 				.catch((err) => {
