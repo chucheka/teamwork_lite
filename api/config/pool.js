@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === 'test') {
 // 		break;
 // }
 
-console.log(process, env.NODE_ENV);
+console.log(process.env.NODE_ENV);
 
 const pool = new Pool({
 	connect,
