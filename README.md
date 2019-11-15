@@ -44,7 +44,7 @@ https://teamwork-lite.herokuapp.com/api-docs/
 ### Installation
 1. Clone this repository into your local machine:
 ```
-e.g git clone https://github.com/ucheka22/property-pro-lite.git
+e.g git clone https://github.com/ucheka22/teamwork_lite.git
 ```
 2. Install dependencies 
 ```
