@@ -250,9 +250,9 @@ class gifController {
 	static deleteFlaggedGif(req, res, next) {
 		const gifId = parseInt(req.params.gifId, 10);
 
-		const { userName } = req.user;
+		const adminEmail = req.user.email;
 
-		if (userName === 'Admin') {
+		if (adminEmail == process.env.ADMIN_EMAIL) {
 			pool
 				.query(deleteFlaggedGifById, [ gifId ])
 				.then((result) => {

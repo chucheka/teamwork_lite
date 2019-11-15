@@ -1,12 +1,24 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 import pool from '../../config/pool';
 import { createUserQuery, checkEmail } from '../../models/users/sql';
 import validateUserInput from '../../validator/user';
 import validateSignInInput from '../../validator/signin';
 import isEmpty from '../../validator/isEmpty';
+
+dotenv.config();
+
 class userController {
 	static createAccount(req, res, next) {
+		// const isAdmin = req.user.userName == process.env.ADMIN_USERNAME && req.user.email == process.env.ADMIN_EMAIL;
+
+		// if (!isAdmin) {
+		// 	return res.status(401).json({
+		// 		status: 'error',
+		// 		error: 'Only admin can create an account'
+		// 	});
+		// }
 		// Validate user input
 		const error = validateUserInput(req.body);
 		const isValid = isEmpty(error);
@@ -41,11 +53,10 @@ class userController {
 											userId,
 											firstName,
 											lastName,
-											userName:
-												firstName == 'Chike' && lastName == 'Ucheka' ? 'Admin' : firstName,
 											email
 										};
-										jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '7d' }, (err, token) => {
+										jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '366d' }, (err, token) => {
+											console.log(token);
 											res.status(201).json({
 												status: 'success',
 												data: {
@@ -86,33 +97,49 @@ class userController {
 			});
 		}
 		const { email, password } = req.body;
-
 		pool
 			.query(checkEmail, [ email ])
 			.then((result) => {
 				if (result.rows.length >= 1) {
 					const user = result.rows[0];
 					bcrypt.compare(password, user.password, (err, isMatch) => {
-						if (err) throw err;
+						if (err) {
+							return res.status(400).json({
+								status: 'error',
+								error: 'Invalid credentials'
+							});
+						}
 						if (isMatch) {
 							const { userId, firstName, lastName, email } = user;
+							const isAdmin = process.env.PASSWORD == password && process.env.ADMIN_EMAIL == email;
 							const payload = {
 								userId,
 								firstName,
 								lastName,
-								userName: firstName === 'Chike' && lastName === 'Ucheka' ? 'Admin' : firstName,
+								userName: isAdmin ? process.ADMIN_USERNAME : firstName,
 								email
 							};
-							jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '7d' }, (err, token) => {
+							jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '366d' }, (err, token) => {
 								if (err) throw err;
-								return res.status(200).json({
-									status: 'success',
-									data: {
-										message: 'User successfully signin',
-										token,
-										userId
-									}
-								});
+								if (!isAdmin) {
+									return res.status(200).json({
+										status: 'success',
+										data: {
+											message: 'User successfully signin',
+											token,
+											userId
+										}
+									});
+								} else {
+									return res.status(200).json({
+										status: 'success',
+										data: {
+											message: `Welcome Admin!! Access privilege routes with this token: ${token}`,
+											token,
+											userId
+										}
+									});
+								}
 							});
 						} else {
 							return res.status(400).json({

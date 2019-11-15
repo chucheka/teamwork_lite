@@ -1,4 +1,5 @@
 import pool from '../../config/pool';
+import dotenv from 'dotenv';
 import {
 	searchCommentById,
 	flagCommentQuery,
@@ -7,6 +8,8 @@ import {
 } from '../../models/comments/sql';
 import validateEditCommentInput from '../../validator/editArticle';
 import isEmpty from '../../validator/isEmpty';
+
+dotenv.config();
 
 class commentsController {
 	// @ Edit posted comment
@@ -108,9 +111,9 @@ class commentsController {
 	static deleteFlaggedComment(req, res, next) {
 		const commentId = parseInt(req.params.commentId, 10);
 
-		const { userName } = req.user;
-		console.log(`This ${userName} is the user trying to delete comment`);
-		if (userName === 'Admin') {
+		const adminEmail = req.user.email;
+		console.log(`This ${adminEmail} is the user trying to delete comment`);
+		if (adminEmail == process.env.ADMIN_EMAIL) {
 			pool
 				.query(deleteFlaggedCommentById, [ commentId ])
 				.then((result) => {

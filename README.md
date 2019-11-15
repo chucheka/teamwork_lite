@@ -66,7 +66,7 @@ Run test use  ```npm run test```.
 <table>
 <tr><th>HTTP VERB</th><th>ENDPOINT</th><th>DESCRIPTION</th></tr>
 
-<tr><td>POST</td> <td>/api/v1/auth/create-user</td>  <td>Create user account</td></tr>
+<tr><td>POST</td> <td>/api/v1/auth/create-user</td>  <td>Admin create user account</td></tr>
 
 <tr><td>POST</td> <td>/api/v1/auth/signin</td>  <td>Login a user</td></tr>
 

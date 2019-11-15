@@ -1,3 +1,4 @@
+import dotenv from 'dotenv';
 import pool from '../../config/pool';
 import {
 	createArticleQuery,
@@ -7,15 +8,12 @@ import {
 	flagArticleQuery,
 	deleteFlaggedArticleById
 } from '../../models/articles/sql';
-import {
-	commentsByArticleId,
-	createCommentQuery,
-	searchCommentById,
-	flagCommentQuery
-} from '../../models/comments/sql';
+import { commentsByArticleId, createCommentQuery } from '../../models/comments/sql';
 import validateArticleInput from '../../validator/articles';
 import validateEditArticleInput from '../../validator/editArticle';
 import isEmpty from '../../validator/isEmpty';
+
+dotenv.config();
 
 class articlesController {
 	static postArticle(req, res, next) {
@@ -272,9 +270,9 @@ class articlesController {
 	static deleteFlaggedArticle(req, res, next) {
 		const articleId = parseInt(req.params.articleId, 10);
 
-		const { userName } = req.user;
-		console.log(`This ${userName} is the user deeteing article`);
-		if (userName === 'Admin') {
+		const adminEmail = req.user.email;
+		console.log(`This ${adminEmail} is the user deeteing article`);
+		if (adminEmail === process.env.ADMIN_EMAIL) {
 			pool
 				.query(deleteFlaggedArticleById, [ articleId ])
 				.then((result) => {
