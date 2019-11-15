@@ -20,31 +20,31 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">5.88% </span>
+        <span class="strong">52.94% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>1/17</span>
+        <span class='fraction'>9/17</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">58.33% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/12</span>
+        <span class='fraction'>7/12</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/1</span>
+        <span class='fraction'>1/1</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">5.88% </span>
+        <span class="strong">52.94% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>1/17</span>
+        <span class='fraction'>9/17</span>
       </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
     </p>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -81,27 +81,27 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -111,28 +111,28 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import validator from 'validator';
 import isEmpty from './isEmpty';
 &nbsp;
-const validateEditArticleInput = <span class="fstat-no" title="function not covered" >(d</span>ata) =&gt; {
-	let error = <span class="cstat-no" title="statement not covered" >{};</span>
-	let { article, title } = <span class="cstat-no" title="statement not covered" >data;</span>
+const validateEditArticleInput = (data) =&gt; {
+	let error = {};
+	let { article, title } = data;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >	article = !isEmpty(article) ? article : ' ';</span>
-<span class="cstat-no" title="statement not covered" >	title = !isEmpty(title) ? title : ' ';</span>
+	article = !isEmpty(article) ? <span class="branch-0 cbranch-no" title="branch not covered" >article </span>: ' ';
+	title = !isEmpty(title) ? title : ' ';
 &nbsp;
-<span class="cstat-no" title="statement not covered" >	if (validator.matches(article, /fuck|stupid|sex/gi)) {</span>
+	<span class="missing-if-branch" title="if path not taken" >I</span>if (validator.matches(article, /fuck|stupid|sex/gi)) {
 <span class="cstat-no" title="statement not covered" >		error.article = 'Foul words are forbidden';</span>
 <span class="cstat-no" title="statement not covered" >		return error;</span>
 	}
-<span class="cstat-no" title="statement not covered" >	if (validator.matches(title, /fuck|stupid|sex/gi)) {</span>
+	<span class="missing-if-branch" title="if path not taken" >I</span>if (validator.matches(title, /fuck|stupid|sex/gi)) {
 <span class="cstat-no" title="statement not covered" >		error.title = 'Foul words are forbidden';</span>
 <span class="cstat-no" title="statement not covered" >		return error;</span>
 	}
 &nbsp;
-<span class="cstat-no" title="statement not covered" >	if (!validator.isLength(article, { max: 500 })) {</span>
+	<span class="missing-if-branch" title="if path not taken" >I</span>if (!validator.isLength(article, { max: 500 })) {
 <span class="cstat-no" title="statement not covered" >		error.article = 'Article must contain maximum 500 characters';</span>
 <span class="cstat-no" title="statement not covered" >		return error;</span>
 	}
 &nbsp;
-<span class="cstat-no" title="statement not covered" >	if (!validator.isLength(title, { max: 100 })) {</span>
+	<span class="missing-if-branch" title="if path not taken" >I</span>if (!validator.isLength(title, { max: 100 })) {
 <span class="cstat-no" title="statement not covered" >		error.title = 'Title must contain maximum of 100 characters';</span>
 <span class="cstat-no" title="statement not covered" >		return error;</span>
 	}
@@ -145,7 +145,7 @@ export default validateEditArticleInput;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Nov 13 2019 09:36:49 GMT+0100 (West Africa Standard Time)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Nov 15 2019 04:15:10 GMT+0100 (West Africa Standard Time)
 </div>
 </div>
 <script src="..\..\prettify.js"></script>

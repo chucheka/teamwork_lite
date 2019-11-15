@@ -18,8 +18,10 @@ export const createCommentQuery = {
 	createComment
 };
 
+export const updateCommentById = `UPDATE comments SET comment = $1 WHERE "commentId" = $2 RETURNING *`;
 export const commentsByArticleId = `SELECT "commentId",comment, "authourId" FROM comments WHERE "articleId" = $1`;
 export const commentsByGifId = `SELECT "commentId",comment, "authourId" FROM comments WHERE "gifId" = $1`;
 export const searchCommentById = `SELECT * FROM comments WHERE "commentId" = $1`;
-export const flagCommentQuery = `UPDATE comments SET flagged = true RETURNING *`;
+export const flagCommentQuery = `UPDATE comments SET flagged = true WHERE "commentId" = $1 RETURNING *`;
 export const deleteCommentById = `DELETE FROM comments WHERE "commentId" = $1 RETURNING *`;
+export const deleteFlaggedCommentById = `DELETE FROM comments WHERE "commentId" = $1 AND flagged = true RETURNING *`;

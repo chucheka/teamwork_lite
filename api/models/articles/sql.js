@@ -24,4 +24,4 @@ export const updateArticleById = `UPDATE articles SET article = $1,title = $2,ta
 
 export const deleteArticleById = `DELETE FROM articles WHERE "articleId" = $1 RETURNING *`;
 export const deleteFlaggedArticleById = `DELETE FROM articles WHERE "articleId" = $1 AND flagged = true RETURNING *`;
-export const flagArticleQuery = `UPDATE articles SET flagged = true RETURNING *`;
+export const flagArticleQuery = `UPDATE articles SET flagged = true WHERE "articleId" = $1 RETURNING *`;

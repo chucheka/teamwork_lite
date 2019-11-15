@@ -3,8 +3,6 @@ import fs from 'fs';
 import chaiHttp from 'chai-http';
 import app from '../api/app';
 import token from './token';
-import queryRunner from '../api/models/index';
-import { createCommentQuery } from '../api/models/comments/sql';
 
 const { expect } = chai;
 chai.use(chaiHttp);
@@ -28,7 +26,7 @@ describe('Gifs Endpoints', () => {
 				.set('authorization', token)
 				.set('content-type', 'multipart/form-data')
 				.field('title', gif.title)
-				.attach('image', fs.readFileSync(__dirname + '/skeleton.gif'), 'skeleton.gif')
+				.attach('image', fs.readFileSync(`${__dirname}/skeleton.gif`), 'skeleton.gif')
 				.then((res) => {
 					expect(res).to.have.status(201);
 					expect(res.body).to.be.an('object');
@@ -60,7 +58,7 @@ describe('Gifs Endpoints', () => {
 				});
 		});
 		it('GET /api/v1/gifs/{gifId}:Should be able to get specific gif with gifId', (done) => {
-			let gifId = 1;
+			const gifId = 1;
 			chai
 				.request(app)
 				.get(`/api/v1/gifs/${gifId}`)
@@ -79,7 +77,7 @@ describe('Gifs Endpoints', () => {
 				});
 		});
 		it('GET /api/v1/gifs/{gifId}:Should not be able to get gif with invalid gifId', (done) => {
-			let gifId = 419; // 419 is an invalid gif ID
+			const gifId = 419; // 419 is an invalid gif ID
 			chai
 				.request(app)
 				.get(`/api/v1/gifs/${gifId}`)
@@ -96,7 +94,7 @@ describe('Gifs Endpoints', () => {
 				});
 		});
 		it('POST /api/v1/gifs/{gifId}/comment:Users should be able to post comments on an gif', (done) => {
-			let gifId = 1;
+			const gifId = 1;
 			chai
 				.request(app)
 				.post(`/api/v1/gifs/${gifId}/comment`)
@@ -125,7 +123,7 @@ describe('Gifs Endpoints', () => {
 				});
 		});
 		it('POST /api/v1/gifs/{gifId}/comment:Should not comment on a  gif with invalid gifId', (done) => {
-			let gifId = 419; // Invalid gif ID
+			const gifId = 419; // Invalid gif ID
 			chai
 				.request(app)
 				.post(`/api/v1/gifs/${gifId}`)
@@ -142,7 +140,7 @@ describe('Gifs Endpoints', () => {
 				});
 		});
 		it('PATCH /api/v1/gifs/${gifId}/flag:Should be able to flag a gif as inapropriate', (done) => {
-			let gifId = 1;
+			const gifId = 1;
 			chai
 				.request(app)
 				.patch(`/api/v1/gifs/${gifId}/flag`)
@@ -160,7 +158,7 @@ describe('Gifs Endpoints', () => {
 				});
 		});
 		it('DELETE /api/v1/gifs/{gifId}:Should delete an gif with give gifId', (done) => {
-			let gifId = 1;
+			const gifId = 1;
 			chai
 				.request(app)
 				.delete(`/api/v1/gifs/${gifId}`)
@@ -177,7 +175,7 @@ describe('Gifs Endpoints', () => {
 				});
 		});
 		it('DELETE /api/v1/gifs/{gifId}:Should not delete an gif with invalid gifId', (done) => {
-			let gifId = 419; // Invalid gif ID
+			const gifId = 419; // Invalid gif ID
 			chai
 				.request(app)
 				.delete(`/api/v1/gifs/${gifId}`)
