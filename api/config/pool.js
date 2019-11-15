@@ -30,7 +30,7 @@ switch (process.env.NODE_ENV) {
 		break;
 }
 
-console.log(process.env.NODE_ENV);
+console.log(connect);
 
 const pool = new Pool({
 	connect,
