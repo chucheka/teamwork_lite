@@ -20,7 +20,8 @@ switch (process.env.NODE_ENV) {
 		break;
 	case 'production':
 		connect = {
-			connectionString: process.env.PROD_DEV
+			connectionString:
+				'postgres://fkwmtzne:ZwQ4T-jaE_01FoSlFlil6v2neJx9gxXs@otto.db.elephantsql.com:5432/fkwmtzne'
 		};
 		break;
 	default:
@@ -30,7 +31,8 @@ switch (process.env.NODE_ENV) {
 		break;
 }
 
-console.log(connect);
+// DEV_DB = postgresql://postgres:chike22ucheka@localhost:5432/teamwork
+console.log(connect, process.env.NODE_ENV, typeof process.env.NODE_ENV);
 
 const pool = new Pool({
 	connect,
