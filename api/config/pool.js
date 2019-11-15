@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'test') {
 	};
 } else {
 	connect = {
-		connectionString: process.env.PROD_DB || process.env.DEV_DB
+		connectionString: process.env.DEV_DB || process.env.PROD_DB
 	};
 }
 // switch (process.env.NODE_ENV) {
@@ -30,7 +30,7 @@ if (process.env.NODE_ENV === 'test') {
 // 		break;
 // }
 
-console.log(connect);
+console.log(process, env.NODE_ENV);
 
 const pool = new Pool({
 	connect,
