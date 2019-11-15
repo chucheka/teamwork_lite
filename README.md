@@ -6,13 +6,13 @@
 
 
 ## GitHub Project Management Board
-https://github.com/ucheka22/teamwork_lite/projects/1
-
-## UI hosted on gh-pages
-https://ucheka22.github.io/property-pro-lite/UI/
+https://github.com/ucheka22/teamwork_lite.git
 
 ## APP Hosted On Heroku
-https://my-property-pro.herokuapp.com
+https://teamwork-lite.herokuapp.com
+
+## API Documentation
+https://teamwork-lite.herokuapp.com/api-docs/
 
 ## Table of Content
  * [Getting Started](#getting-started)
