@@ -56,7 +56,6 @@ class userController {
 											email
 										};
 										jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '366d' }, (err, token) => {
-											console.log(token);
 											res.status(201).json({
 												status: 'success',
 												data: {

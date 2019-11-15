@@ -112,7 +112,6 @@ class commentsController {
 		const commentId = parseInt(req.params.commentId, 10);
 
 		const adminEmail = req.user.email;
-		console.log(`This ${adminEmail} is the user trying to delete comment`);
 		if (adminEmail == process.env.ADMIN_EMAIL) {
 			pool
 				.query(deleteFlaggedCommentById, [ commentId ])
