@@ -10,7 +10,7 @@ describe('Auth User', () => {
 		const user = {
 			firstName: 'Chike',
 			lastName: 'Ucheka',
-			email: 'ryanucheka@gmail.com',
+			email: 'ryanucheka22@gmail.com',
 			password: 'chike22ucheka',
 			password2: 'chike22ucheka',
 			gender: 'Male',
