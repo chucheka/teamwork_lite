@@ -42,7 +42,7 @@ class userController {
 											firstName,
 											lastName,
 											userName:
-												firstName === 'Chike' && lastName === 'Ucheka' ? 'Admin' : firstName,
+												firstName == 'Chike' && lastName == 'Ucheka' ? 'Admin' : firstName,
 											email
 										};
 										jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '7d' }, (err, token) => {

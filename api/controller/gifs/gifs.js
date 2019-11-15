@@ -1,7 +1,13 @@
 import pool from '../../config/pool';
 import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
-import { createGifsQuery, searchGifById, deleteGifById, flagGifQuery } from '../../models/gifs/sql';
+import {
+	createGifsQuery,
+	searchGifById,
+	deleteGifById,
+	flagGifQuery,
+	deleteFlaggedGifById
+} from '../../models/gifs/sql';
 import { commentsByGifId, createCommentQuery } from '../../models/comments/sql';
 import validateGifInput from '../../validator/gif';
 import isEmpty from '../../validator/isEmpty';
@@ -216,7 +222,7 @@ class gifController {
 			.then((result) => {
 				if (result.rows.length > 0) {
 					pool
-						.query(flagGifQuery)
+						.query(flagGifQuery, [ gifId ])
 						.then((flaggedGif) => {
 							if (flaggedGif.rows.length > 0) {
 								return res.status(201).json({
@@ -240,6 +246,39 @@ class gifController {
 			.catch((err) => {
 				console.log(err);
 			});
+	}
+	static deleteFlaggedGif(req, res, next) {
+		const gifId = parseInt(req.params.gifId, 10);
+
+		const { userName } = req.user;
+
+		if (userName === 'Admin') {
+			pool
+				.query(deleteFlaggedGifById, [ gifId ])
+				.then((result) => {
+					if (result.rows.length > 0) {
+						return res.status(201).json({
+							status: 'success',
+							data: {
+								message: 'Gif successfully deleted'
+							}
+						});
+					} else {
+						return res.status(404).json({
+							status: 'error',
+							error: 'Gif not found or not flagged'
+						});
+					}
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		} else {
+			return res.status(401).json({
+				status: 'error',
+				error: 'Only admin can delete flagged gifs'
+			});
+		}
 	}
 }
 

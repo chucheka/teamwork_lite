@@ -9,10 +9,20 @@
 		"sourceType": "module"
 	},
 	"rules": {
-		"no-undef": 0,
 		"no-console": 0,
+		"linebreak-style": 0,
+		"import/no-unresolved": 0,
+		"indent": 0,
+		"no-tabs": 0,
 		"comma-dangle": 0,
-		"line-break-style": 0
+		"arrow-parens": 0,
+		"consistent-return": 0,
+		"array-bracket-spacing": 0,
+		"max-len": 0,
+		"camelcase": 0,
+		"object-curl-newline": 0,
+		"no-undef": 0,
+		"no-template-curly-in-string": 0
 	},
 	"extends": "airbnb-base"
 }

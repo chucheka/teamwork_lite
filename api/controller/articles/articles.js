@@ -238,7 +238,7 @@ class articlesController {
 			.then((result) => {
 				if (result.rows.length > 0) {
 					pool
-						.query(flagArticleQuery)
+						.query(flagArticleQuery, [ articleId ])
 						.then((flaggedArt) => {
 							if (flaggedArt.rows.length > 0) {
 								return res.status(201).json({
@@ -272,8 +272,8 @@ class articlesController {
 	static deleteFlaggedArticle(req, res, next) {
 		const articleId = parseInt(req.params.articleId, 10);
 
-		const { userName } = req.body;
-
+		const { userName } = req.user;
+		console.log(`This ${userName} is the user deeteing article`);
 		if (userName === 'Admin') {
 			pool
 				.query(deleteFlaggedArticleById, [ articleId ])
@@ -302,66 +302,33 @@ class articlesController {
 			});
 		}
 	}
-	static flagComment(req, res, next) {
-		const commentId = parseInt(req.params.commentId, 10);
-		pool
-			.query(searchCommentById, [ commentId ])
-			.then((result) => {
-				if (result.rows.length > 0) {
-					pool
-						.query(flagCommentQuery)
-						.then((flaggedComment) => {
-							if (flaggedComment.rows.length > 0) {
-								return res.status(201).json({
-									status: 'success',
-									data: {
-										message: 'comment has been flagged as inappropriate'
-									}
-								});
-							} else {
-								return res.status(500).json({
-									status: 'error',
-									error: 'Internal server error'
-								});
-							}
-						})
-						.catch((err) => {
-							console.log(err);
-						});
-				} else {
-					return res.status(404).json({
-						status: 'error',
-						error: 'Comment not found'
-					});
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	}
+
 	static async getArticleByTagName(req, res) {
-		const { tag } = req.query;
-		const query = {
-			text: `SELECT * FROM articles WHERE tag = ${tag}`
-		};
+		console.log(req.query.tag);
+
 		try {
-			const result = await pool.query(query);
+			let tag = req.query.tag;
+			const query = {
+				text: `SELECT * FROM articles WHERE tag = $1`
+			};
+			const result = await pool.query(query, [ tag ]);
 			if (result.rows.length > 0) {
-				res.status(200).json({
+				return res.status(200).json({
 					status: 'success',
 					data: result.rows
 				});
 			} else {
-				res.status(404).json({
+				return res.status(404).json({
 					status: 'error',
 					error: 'No articles in this category'
 				});
 			}
 		} catch (error) {
-			res.status(500).json({
-				status: 'error',
-				error: error.message
-			});
+			console.log(error);
+			// return res.status(500).json({
+			// 	status: 'error',
+			// 	error: error.message
+			// });
 		}
 	}
 }

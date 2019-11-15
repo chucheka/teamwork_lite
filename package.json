@@ -6,11 +6,13 @@
 	"scripts": {
 		"lint": "eslint */*.js --fix",
 		"start": "npm run build && node ./src/app.js",
-		"dev": "npm run migration && nodemon --exec babel-node ./api/app.js",
+		"dev": "nodemon --exec babel-node ./api/app.js",
 		"test": "cross-env NODE_ENV=test && cross-env NODE_ENV=test npm run migration && cross-env NODE_ENV=test nyc --reporter=text-summary --reporter=lcov --reporter=text mocha --require @babel/polyfill --require @babel/register test/*.js --no-timeout --exit",
 		"clean": "rm -rf src",
 		"build": "npm run clean && babel api --out-dir src",
-		"coverage": "nyc report --reporter=text-lcov | coveralls",
+		"coveralls-coverage": "nyc report --reporter=text-lcov | coveralls",
+		"code-climate": "codeclimate-test-reporter < lcov.info",
+		"coverage": "npm run test && npm run coveralls-coverage && npm run code-climate",
 		"createTables": "babel-node ./api/models/index.js",
 		"dropTables": "babel-node ./api/models/dropTables.js",
 		"migration": "npm run dropTables && npm run createTables && babel-node ./api/models/comments.js"

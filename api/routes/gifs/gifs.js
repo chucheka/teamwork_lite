@@ -24,5 +24,8 @@ router.post('/gifs/:gifId/comment', verifyToken, gifController.postComment);
 //@ desc User can flag gif(s) has inapropriate
 // @ access private
 router.patch('/gifs/:gifId/flag', verifyToken, gifController.flagGif);
-// router.patch('/comments/:commentId/flag', verifyToken, gifController.flagComment);
+//@ route DELETE /api/v1/gifs/:gifId/flag
+//@ desc Admin can delete flagged gif
+// @ access private
+router.delete('/gifs/:gifId/flag', verifyToken, gifController.deleteFlaggedGif);
 export default router;

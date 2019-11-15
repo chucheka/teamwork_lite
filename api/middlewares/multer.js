@@ -4,7 +4,7 @@ const uploads = multer({
 	storage: multer.diskStorage({}),
 	fileFilter: (req, file, cb) => {
 		if (!file.mimetype.match(/gif$/i)) {
-			cb({ message: 'You can only upload gifs' }, false);
+			cb(new Error('Only gifs are allowed'), false);
 			return;
 		}
 		cb(null, true);

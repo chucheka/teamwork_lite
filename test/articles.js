@@ -67,7 +67,7 @@ describe('Articles Endpoints', () => {
 	});
 	describe('Get /api/articles/:articleId', () => {
 		it('Should be able to get specific article with articleId', (done) => {
-			let articleId = 1;
+			const articleId = 1;
 			chai
 				.request(app)
 				.get(`/api/v1/articles/${articleId}`)
@@ -86,7 +86,7 @@ describe('Articles Endpoints', () => {
 				});
 		});
 		it('Should not be able to get article with invalid articleId', (done) => {
-			let articleId = 419; // 419 is an invalid article ID
+			const articleId = 419; // 419 is an invalid article ID
 			chai
 				.request(app)
 				.get(`/api/v1/articles/${articleId}`)
@@ -105,7 +105,7 @@ describe('Articles Endpoints', () => {
 	});
 	describe('PATCH /api/v1/articles/:articleId', () => {
 		it('Should be able to edit article when logged in', (done) => {
-			let articleId = 1;
+			const articleId = 1;
 			articleItem.article = '';
 			articleItem.title = 'Changed the title of article';
 			chai
@@ -127,7 +127,7 @@ describe('Articles Endpoints', () => {
 				});
 		});
 		it('Should not update article with invalid articleId', (done) => {
-			let articleId = 419; // 419 is an invalid article ID
+			const articleId = 419; // 419 is an invalid article ID
 			chai
 				.request(app)
 				.patch(`/api/v1/articles/${articleId}`)
@@ -146,7 +146,7 @@ describe('Articles Endpoints', () => {
 		});
 	});
 	describe('PATCH /api/v1/articles/:articleId', () => {
-		let articleId = 1;
+		const articleId = 1;
 		it('Should be able to flag a article as inapropriate', (done) => {
 			chai
 				.request(app)
@@ -167,7 +167,7 @@ describe('Articles Endpoints', () => {
 	});
 	describe('DELETE /api/v1/articles/:articleId', () => {
 		it.skip('Should delete an article with give articleId', (done) => {
-			let articleId = 1;
+			const articleId = 2;
 			chai
 				.request(app)
 				.delete(`/api/v1/artciles/${articleId}`)
@@ -184,7 +184,7 @@ describe('Articles Endpoints', () => {
 				});
 		});
 		it('Should delete an article with invalid articleId', (done) => {
-			let articleId = 419; // Invalid article ID
+			const articleId = 419; // Invalid article ID
 			chai
 				.request(app)
 				.delete(`/api/v1/artciles/${articleId}`)
@@ -203,7 +203,7 @@ describe('Articles Endpoints', () => {
 	});
 	describe('POST /api/v1/articles/:articleId/comment', () => {
 		it.skip('Users should be able to post comments on an article', (done) => {
-			let articleId = 1;
+			const articleId = 1;
 			chai
 				.request(app)
 				.post(`/api/v1/articles/${articleId}/comment`)
@@ -233,19 +233,18 @@ describe('Articles Endpoints', () => {
 				});
 		});
 	});
-	describe.skip('GET /api/v1/articles?tag=tagName', () => {
-		const tagName = 'politics';
-		it('Should be able to get all articles and/or gifs with a particular tag', (done) => {
+	describe('GET /api/v1/articles?tag=tagName', () => {
+		it('Should be able to get all articles with a particular tag', (done) => {
 			chai
 				.request(app)
-				.get('/api/v1/articles')
-				.query({ tag: tagName })
+				.get('/api/v1/articles?tag=politics')
 				.set('authorization', token)
 				.then((res) => {
 					expect(res).to.have.status(200);
 					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
-					expect(res.body).to.have.property('data').which.is('array');
+					expect(res.body).to.have.property('data');
+					expect(res.body.data).to.be.an('array');
 					expect(res.body.data[0]).to.be.an('object');
 					expect(res.body.data[0]).to.include.any.keys(
 						'id',
@@ -253,20 +252,20 @@ describe('Articles Endpoints', () => {
 						'title',
 						'article',
 						'url',
-						'authourId'
+						'authourId',
+						'tag'
 					);
+					expect(res.body.data[0]).to.have.property('tag', 'politics');
 					done();
 				})
 				.catch((err) => {
 					done(err);
 				});
 		});
-		it('Should be empty is there are no articles/gifs with tagName', (done) => {
-			let tagName = 'sex';
+		it('Should be empty is there are no articles with tagName', (done) => {
 			chai
 				.request(app)
-				.get('/api/v1/articles')
-				.query({ tag: tagName })
+				.get('/api/v1/articles?tag=rubbish')
 				.set('authorization', token)
 				.then((res) => {
 					expect(res).to.have.status(404);

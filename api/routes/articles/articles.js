@@ -33,8 +33,13 @@ router.patch('/articles/:articleId/comment', verifyToken, articleController.post
 //@ desc User can flag article(s) has inapropriate
 // @ access private
 router.patch('/articles/:articleId/flag', verifyToken, articleController.flagArticle);
+//@ route DELETE /api/v1/articles/:articleId/flag
+//@ desc Admin can delete article(s) flagged as inappropriate
+//@ access private
 router.delete('/articles/:articleId/flag', verifyToken, articleController.deleteFlaggedArticle);
-router.patch('/comments/:commentId/flag', verifyToken, articleController.flagComment);
+//@ route GET /api/v1/articles?tag={tagName}
+//@ desc User can view all articles in a particular catergory
+// @ access private
 router.get('/articles', verifyToken, articleController.getArticleByTagName);
 
 export default router;

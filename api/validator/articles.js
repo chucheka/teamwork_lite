@@ -3,10 +3,11 @@ import isEmpty from './isEmpty';
 
 const validateArticleInput = (data) => {
 	let error = {};
-	let { article, title } = data;
+	let { article, title, tag } = data;
 
 	article = !isEmpty(article) ? article : ' ';
 	title = !isEmpty(title) ? title : ' ';
+	tag = !isEmpty(tag) ? tag : ' ';
 
 	if (validator.matches(article, /fuck|stupid|sex/gi)) {
 		error.article = 'Foul words are forbidden';
@@ -27,6 +28,14 @@ const validateArticleInput = (data) => {
 	}
 	if (validator.isEmpty(title)) {
 		error.title = 'Title field is required';
+		return error;
+	}
+	if (!validator.isLength(tag, { min: 4, max: 50 })) {
+		error.tag = 'tag must contain maximum of 50 characters';
+		return error;
+	}
+	if (validator.isEmpty(tag)) {
+		error.tag = 'tag field is required';
 		return error;
 	}
 };
