@@ -3,7 +3,8 @@
 	"plugins": [
 		[
 			"istanbul",
-			"transform-runtime",
+			"@babel/transform-runtime",
+
 			{
 				"regenerator": true
 			}
