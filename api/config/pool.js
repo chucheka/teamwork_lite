@@ -35,7 +35,7 @@ console.log(connect);
 const pool = new Pool({
 	connect,
 	max: 10,
-	idleTimeoutMillis: 3000000
+	idleTimeoutMillis: 30000
 });
 
 export default pool;
