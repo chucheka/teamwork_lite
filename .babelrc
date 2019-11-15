@@ -1,13 +1,13 @@
 {
-	"presets": [ "@babel/preset-env" ],
-	"plugins": [
+	"presets": [
 		[
-			"istanbul",
-			"@babel/transform-runtime",
-
+			"@babel/preset-env",
 			{
-				"regenerator": true
+				"targets": {
+					"node": "current"
+				}
 			}
 		]
-	]
+	],
+	"plugins": [ "istanbul" ]
 }
