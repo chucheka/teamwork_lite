@@ -42,8 +42,8 @@ console.log(connect, process.env.NODE_ENV, typeof process.env.NODE_ENV);
 
 const pool = new Pool({
 	connect,
-	max: 10,
-	idleTimeoutMillis: 30000
+	max: 50,
+	idleTimeoutMillis: 60000
 });
 
 export default pool;
