@@ -22,7 +22,13 @@ switch (process.env.NODE_ENV) {
 		break;
 	case 'production':
 		connect = {
-			connectionString: process.env.PROD_DB
+			connectionString: {
+				user: process.env.PGUSER,
+				host: process.env.PGHOST,
+				database: process.env.PGDATABASE,
+				password: process.env.PGPASSWORD,
+				port: process.env.PGPORT
+			}
 		};
 		break;
 	default:
@@ -33,6 +39,7 @@ switch (process.env.NODE_ENV) {
 }
 
 // DEV_DB = postgresql://postgres:chike22ucheka@localhost:5432/teamwork
+// PROD_DB = postgres://fkwmtzne:ZwQ4T-jaE_01FoSlFlil6v2neJx9gxXs@otto.db.elephantsql.com:5432/fkwmtzne
 console.log(connect, process.env.NODE_ENV, typeof process.env.NODE_ENV);
 
 const pool = new Pool({
