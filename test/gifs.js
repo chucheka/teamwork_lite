@@ -10,14 +10,6 @@ describe('Gifs Endpoints', () => {
 	const gif = {
 		title: 'Complete Guide to React'
 	};
-
-	// before('Create gif comment', async () => {
-	// 	try {
-	// 		queryRunner(createCommentQuery.createComment, [ 1, , 1, 'Initial comment for gif 1' ]);
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// });
 	describe('GIFS SUITE', () => {
 		it('POST /api/v1/gifs:Should successfully upload a gifs', (done) => {
 			chai
@@ -68,7 +60,7 @@ describe('Gifs Endpoints', () => {
 					expect(res.body).to.be.an('object');
 					expect(res.body).to.have.property('status', 'success');
 					expect(res.body).to.have.property('data');
-					expect(res.body.data).to.include.all.keys('id', 'createdOn', 'title', 'imageUrl', 'comments');
+					expect(res.body.data).to.include.any.keys('id', 'createdOn', 'title', 'imageUrl', 'comments');
 					expect(res.body.data.comments).to.be.an('array');
 					done();
 				})

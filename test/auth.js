@@ -6,7 +6,7 @@ const { expect } = chai;
 
 chai.use(chaiHttp);
 describe('Auth User', () => {
-	describe.only('POST /api/v1/auth/create_user', () => {
+	describe('POST /api/v1/auth/create_user', () => {
 		const user = {
 			firstName: 'Chike',
 			lastName: 'Ucheka',
