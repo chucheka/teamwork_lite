@@ -1,20 +1,21 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../api/app';
-
+import token from './token';
+import notAdminToken from './notAdminToken';
 const { expect } = chai;
 
 chai.use(chaiHttp);
 describe('Auth User', () => {
 	describe('POST /api/v1/auth/create_user', () => {
 		const user = {
-			firstName: 'Chike',
-			lastName: 'Ucheka',
-			email: 'ryanucheka@gmail.com',
-			password: 'chike22ucheka',
-			password2: 'chike22ucheka',
-			gender: 'Male',
-			jobRole: 'Senior Engineer',
+			firstName: 'John',
+			lastName: 'Doe',
+			email: 'johndoe@gmail.com',
+			password: 'john22doe',
+			password2: 'john22doe',
+			gender: 'male',
+			jobRole: 'Software Developer',
 			department: 'IT',
 			address: 'Area M World Bank Housing Estate'
 		};
@@ -23,6 +24,7 @@ describe('Auth User', () => {
 				.request(app)
 				.post('/api/v1/auth/create-user')
 				.set('content-type', 'application/json')
+				.set('authorization', token)
 				.send(user)
 				.then((res) => {
 					expect(res).to.have.status(201);
@@ -37,10 +39,29 @@ describe('Auth User', () => {
 					done(err);
 				});
 		});
+		it('Only admin can create user usin admin token', (done) => {
+			chai
+				.request(app)
+				.post('/api/v1/auth/create-user')
+				.set('authorization', notAdminToken)
+				.send(user)
+				.then((res) => {
+					expect(res).to.have.status(401);
+					expect(res.body).to.be.an('object');
+					expect(res.body).to.have.property('status', 'error');
+					expect(res.body).to.have.property('error', 'Only admin can create an account');
+					expect(res.body).to.include.any.keys('status', 'error');
+					done();
+				})
+				.catch((err) => {
+					done(err);
+				});
+		});
 		it('Should not create user if email already exist', (done) => {
 			chai
 				.request(app)
 				.post('/api/v1/auth/create-user')
+				.set('authorization', token)
 				.send(user)
 				.then((res) => {
 					expect(res).to.have.status(400);
@@ -78,6 +99,7 @@ describe('Auth User', () => {
 			chai
 				.request(app)
 				.post('/api/v1/auth/create-user')
+				.set('authorization', token)
 				.send(user)
 				.then((res) => {
 					expect(res).to.have.status(400);
