@@ -11,10 +11,7 @@ dotenv.config();
 
 class userController {
 	static createAccount(req, res, next) {
-		console.log(req.user.email);
-
 		const isAdmin = process.env.ADMIN_EMAIL == req.user.email;
-		console.log(`Is it admin ${isAdmin ? 'Yes' : 'No'}`);
 		if (!isAdmin) {
 			return res.status(401).json({
 				status: 'error',
@@ -58,7 +55,6 @@ class userController {
 											email
 										};
 										jwt.sign(payload, process.env.JWT_KEY, { expiresIn: '366d' }, (err, token) => {
-											console.log(token);
 											res.status(201).json({
 												status: 'success',
 												data: {
