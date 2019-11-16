@@ -2,12 +2,11 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../api/app';
 import token from './token';
+import notAdminToken from './notAdminToken';
 const { expect } = chai;
 
 chai.use(chaiHttp);
-describe.only('Auth User', () => {
-	const notAdminToken =
-		'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImZpcnN0TmFtZSI6IkpvaG4iLCJsYXN0TmFtZSI6IkRvZSIsInVzZXJOYW1lIjoiSm9obiIsImVtYWlsIjoiam9obmRvZUBnbWFpbC5jb20iLCJpYXQiOjE1NzM4ODk5NDYsImV4cCI6MTYwNTUxMjM0Nn0.cLPIAaxradQjQ31LFmP73p2A8KDJvuKNgaseD15avR0';
+describe('Auth User', () => {
 	describe('POST /api/v1/auth/create_user', () => {
 		const user = {
 			firstName: 'Brad',
