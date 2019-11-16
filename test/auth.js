@@ -62,6 +62,7 @@ describe.only('Auth User', () => {
 			chai
 				.request(app)
 				.post('/api/v1/auth/create-user')
+				.set('authorization', token)
 				.send(user)
 				.then((res) => {
 					expect(res).to.have.status(400);
@@ -99,6 +100,7 @@ describe.only('Auth User', () => {
 			chai
 				.request(app)
 				.post('/api/v1/auth/create-user')
+				.set('authorization', token)
 				.send(user)
 				.then((res) => {
 					expect(res).to.have.status(400);
