@@ -5,14 +5,14 @@ import app from '../api/app';
 const { expect } = chai;
 
 chai.use(chaiHttp);
-describe('Auth User', () => {
+describe.only('Auth User', () => {
 	describe('POST /api/v1/auth/create_user', () => {
 		const user = {
-			firstName: 'Chike',
-			lastName: 'Ucheka',
-			email: 'ryanucheka@gmail.com',
-			password: 'chike22ucheka',
-			password2: 'chike22ucheka',
+			firstName: 'John',
+			lastName: 'Doe',
+			email: 'johndoe@gmail.com',
+			password: 'john22doe',
+			password2: 'john22doe',
 			gender: 'Male',
 			jobRole: 'Senior Engineer',
 			department: 'IT',
@@ -22,7 +22,7 @@ describe('Auth User', () => {
 			chai
 				.request(app)
 				.post('/api/v1/auth/create-user')
-				.set('content-type', 'application/json')
+				.set('authorization', token)
 				.send(user)
 				.then((res) => {
 					expect(res).to.have.status(201);
@@ -31,6 +31,24 @@ describe('Auth User', () => {
 					expect(res.body).to.include.any.keys('status', 'data');
 					expect(res.body.data).to.be.an('object');
 					expect(res.body.data).to.include.any.keys('message', 'token', 'userId');
+					done();
+				})
+				.catch((err) => {
+					done(err);
+				});
+		});
+		it('Only admin can create user usin admin token', (done) => {
+			chai
+				.request(app)
+				.post('/api/v1/auth/create-user')
+				.set('authorization', 'invalidtokensupplied')
+				.send(user)
+				.then((res) => {
+					expect(res).to.have.status(401);
+					expect(res.body).to.be.an('object');
+					expect(res.body).to.have.property('status', 'error');
+					expect(res.body).to.have.property('error', 'Only admin can create an account');
+					expect(res.body).to.include.any.keys('status', 'error');
 					done();
 				})
 				.catch((err) => {

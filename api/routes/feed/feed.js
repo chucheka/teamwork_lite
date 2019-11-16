@@ -5,6 +5,6 @@ const router = express.Router();
 //@ route GET /api/v1/feeds
 //@ desc User can GET feeds
 // @ access private
-router.get('/feed', verifyToken, feedController.getFeeds);
+router.get('/feeds', verifyToken, feedController.getFeeds);
 
 export default router;

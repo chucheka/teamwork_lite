@@ -11,7 +11,7 @@ describe('GET /api/v1/feed', () => {
   it('Should get all articles and  gifs', (done) => {
     chai
       .request(app)
-      .get('/api/v1/feed')
+      .get('/api/v1/feeds')
       .set('authorization', token)
       .then((res) => {
         expect(res).to.have.status(200);
