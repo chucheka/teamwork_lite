@@ -11,14 +11,16 @@ dotenv.config();
 
 class userController {
 	static createAccount(req, res, next) {
-		// const isAdmin = req.user.userName == process.env.ADMIN_USERNAME && req.user.email == process.env.ADMIN_EMAIL;
+		console.log(req.user.email);
 
-		// if (!isAdmin) {
-		// 	return res.status(401).json({
-		// 		status: 'error',
-		// 		error: 'Only admin can create an account'
-		// 	});
-		// }
+		const isAdmin = process.env.ADMIN_EMAIL == req.user.email;
+		console.log(`Is it admin ${isAdmin ? 'Yes' : 'No'}`);
+		if (!isAdmin) {
+			return res.status(401).json({
+				status: 'error',
+				error: 'Only admin can create an account'
+			});
+		}
 		// Validate user input
 		const error = validateUserInput(req.body);
 		const isValid = isEmpty(error);
