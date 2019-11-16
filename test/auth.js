@@ -1,11 +1,13 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../api/app';
-
+import token from './token';
 const { expect } = chai;
 
 chai.use(chaiHttp);
 describe.only('Auth User', () => {
+	const fakeToken =
+		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImZpcnN0TmFtZSI6IkNoaWtlIiwibGFzdE5hbWUiOiJVY2hla2EiLCJ1c2VyTmFtZSI6IkFkbWluIiwiZW1haWwiOiJyeWFudWNoZWthQGdtYWlsLmNvbSIsImlhdCI6MTU3MzcyMjQ3NCwiZXhwIjoxNTc0MzI3Mjc0fQ.P_pddPkN76FxwSSqZGzFs99f5QzHsRvAqse97mub884';
 	describe('POST /api/v1/auth/create_user', () => {
 		const user = {
 			firstName: 'John',
@@ -41,7 +43,7 @@ describe.only('Auth User', () => {
 			chai
 				.request(app)
 				.post('/api/v1/auth/create-user')
-				.set('authorization', 'invalidtokensupplied')
+				.set('authorization', fakeToken)
 				.send(user)
 				.then((res) => {
 					expect(res).to.have.status(401);
