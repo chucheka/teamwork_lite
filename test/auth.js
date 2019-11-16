@@ -9,13 +9,13 @@ chai.use(chaiHttp);
 describe('Auth User', () => {
 	describe('POST /api/v1/auth/create_user', () => {
 		const user = {
-			firstName: 'Brad',
-			lastName: 'Traversy',
-			email: 'traversy@gmail.com',
-			password: 'brad22traversy',
-			password2: 'brad22traversy',
-			gender: 'Male',
-			jobRole: 'CTO',
+			firstName: 'John',
+			lastName: 'Doe',
+			email: 'johndoe@gmail.com',
+			password: 'john22doe',
+			password2: 'john22doe',
+			gender: 'male',
+			jobRole: 'Software Developer',
 			department: 'IT',
 			address: 'Area M World Bank Housing Estate'
 		};
