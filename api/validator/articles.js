@@ -30,14 +30,14 @@ const validateArticleInput = (data) => {
 		error.title = 'Title field is required';
 		return error;
 	}
-	if (!validator.isLength(tag, { min: 4, max: 50 })) {
-		error.tag = 'tag must contain maximum of 50 characters';
-		return error;
-	}
-	if (validator.isEmpty(tag)) {
-		error.tag = 'tag field is required';
-		return error;
-	}
+	// if (!validator.isLength(tag, { min: 4, max: 50 })) {
+	// 	error.tag = 'tag must contain maximum of 50 characters';
+	// 	return error;
+	// }
+	// if (validator.isEmpty(tag)) {
+	// 	error.tag = 'tag field is required';
+	// 	return error;
+	// }
 };
 
 export default validateArticleInput;

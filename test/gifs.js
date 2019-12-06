@@ -85,7 +85,7 @@ describe('Gifs Endpoints', () => {
 					done(err);
 				});
 		});
-		it('POST /api/v1/gifs/{gifId}/comment:Users should be able to post comments on an gif', (done) => {
+		it.skip('POST /api/v1/gifs/{gifId}/comment:Users should be able to post comments on an gif', (done) => {
 			const gifId = 1;
 			chai
 				.request(app)
