@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 let connect;
+connect = {
+	connectionString: process.env.DEV_DB
+};
 
 // if (process.env.NODE_ENV === 'test') {
 // 	connect = {
@@ -14,31 +17,31 @@ let connect;
 // 		connectionString: process.env.DEV_DB || process.env.PROD_DB
 // 	};
 // }
-switch (process.env.NODE_ENV) {
-	case 'test':
-		connect = {
-			connectionString: process.env.TEST_DB
-		};
-		break;
-	case 'production':
-		connect = {
-			connectionString: {
-				user: process.env.PGUSER,
-				host: process.env.PGHOST,
-				database: process.env.PGDATABASE,
-				password: process.env.PGPASSWORD,
-				port: process.env.PGPORT
-			}
-		};
-		break;
-	default:
-		connect = {
-			connectionString: process.env.DEV_DB
-		};
-		break;
-}
+// switch (process.env.NODE_ENV) {
+// 	case 'test':
+// 		connect = {
+// 			connectionString: process.env.TEST_DB
+// 		};
+// 		break;
+// 	case 'production':
+// 		connect = {
+// 			connectionString: {
+// 				user: process.env.PGUSER,
+// 				host: process.env.PGHOST,
+// 				database: process.env.PGDATABASE,
+// 				password: process.env.PGPASSWORD,
+// 				port: process.env.PGPORT
+// 			}
+// 		};
+// 		break;
+// 	default:
+// 		connect = {
+// 			connectionString: process.env.DEV_DB
+// 		};
+// 		break;
+// }
 
-console.log(connect, process.env.NODE_ENV, typeof process.env.NODE_ENV);
+console.log(connect, process.env.NODE_ENV);
 
 const pool = new Pool({
 	connect,

@@ -76,13 +76,13 @@ class gifController {
 					error: Object.values(error)[0]
 				});
 			}
-			if (req.file) {
+			if (req.file || res.body.image.url) {
 				const result = await cloudinary.v2.uploader.upload(req.file.path, {
 					public_id: `imageUploads/${req.file.originalname}`,
 					use_filename: true,
 					unique_filename: true
 				});
-				image = result.secure_url + ' ' + result.public_id;
+				image = `${result.secure_url} ${result.public_id || res.body.image.url}`;
 				let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
 
 				if (gif.rows.length > 0) {
@@ -99,7 +99,7 @@ class gifController {
 					});
 				}
 			} else {
-				return res.status(400).jsonn({
+				return res.status(400).json({
 					status: 'error',
 					error: 'No file attached'
 				});
