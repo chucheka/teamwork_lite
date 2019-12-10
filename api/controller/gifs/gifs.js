@@ -82,6 +82,7 @@ class gifController {
 					use_filename: true,
 					unique_filename: true
 				});
+
 				image = `${result.secure_url} ${result.public_id}`;
 				let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
 
@@ -100,8 +101,11 @@ class gifController {
 				}
 			}
 			if (req.body.giphyUrl) {
-				image = `${req.body.giphyUrl} ${req.body.giphyUrl}`;
-				let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
+				console.log(`${req.body.giphyUrl} ${req.body.giphyUrl}`);
+				let gif = await pool.query(createGifsQuery.createGif, [
+					title,
+					`${req.body.giphyUrl} ${req.body.giphyUrl}`
+				]);
 
 				if (gif.rows.length > 0) {
 					const { gifId, createdOn, title, imageUrl } = gif.rows[0];
@@ -115,13 +119,15 @@ class gifController {
 							imageUrl
 						}
 					});
+				} else {
+					return res.status(400).json({
+						status: 'error',
+						error: 'No file selected from giphy api'
+					});
 				}
 			}
 			// if (!req.body.giphy && !req.file) {
-			// 	return res.status(400).json({
-			// 		status: 'error',
-			// 		error: 'No file selected'
-			// 	});
+			//
 			// }
 			// if (!req.body.giphy && !req.file) {
 			// 	return res.status(400).json({
