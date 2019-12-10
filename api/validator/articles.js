@@ -4,7 +4,8 @@ import isEmpty from './isEmpty';
 const validateArticleInput = (data) => {
 	let error = {};
 	let { article, title, tag } = data;
-
+	const titleLen = title.split(' ');
+	const articleLen = article.split(' ');
 	article = !isEmpty(article) ? article : ' ';
 	title = !isEmpty(title) ? title : ' ';
 	tag = !isEmpty(tag) ? tag : ' ';
@@ -14,16 +15,17 @@ const validateArticleInput = (data) => {
 		return error;
 	}
 
-	if (!validator.isLength(article, { min: 4, max: 500 })) {
-		error.article = 'Article must contain maximum 500 characters';
+	if (articleLen.length > 2500) {
+		error.article = 'Article too long,should contain at most 2500 words';
 		return error;
 	}
 	if (validator.isEmpty(article)) {
 		error.article = 'Article field is required';
 		return error;
 	}
-	if (!validator.isLength(title, { min: 4, max: 500 })) {
-		error.title = 'Title must contain maximum of 100 characters';
+
+	if (titleLen.length > 16) {
+		error.title = 'Title should contain at most 16 words';
 		return error;
 	}
 	if (validator.isEmpty(title)) {
