@@ -66,7 +66,6 @@ class gifController {
 		// Validate user input
 
 		try {
-			let image;
 			let { title } = req.body;
 			const error = validateGifInput(req.body);
 			const isValid = isEmpty(error);
@@ -76,38 +75,44 @@ class gifController {
 					error: Object.values(error)[0]
 				});
 			}
-			if (req.file || req.body.giphy) {
-				if (req.file) {
-					const result = await cloudinary.v2.uploader.upload(req.file.path, {
-						public_id: `imageUploads/${req.file.originalname}`,
-						use_filename: true,
-						unique_filename: true
-					});
-					image = `${result.secure_url} ${result.public_id}`;
-				}
-				if (req.body.giphy) {
-					image = `Giphy url ${req.body.giphy.url}`;
-				}
-
-				let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
-
-				if (gif.rows.length > 0) {
-					const { gifId, createdOn, title, imageUrl } = gif.rows[0];
-					return res.status(201).json({
-						status: 'success',
-						data: {
-							message: 'Gif successfully posted',
-							gifId,
-							createdOn,
-							title,
-							imageUrl
-						}
-					});
-				}
-			} else {
-				return res.status(400).json({
+			let image;
+			if (req.file) {
+				const result = await cloudinary.v2.uploader.upload(req.file.path, {
+					public_id: `imageUploads/${req.file.originalname}`,
+					use_filename: true,
+					unique_filename: true
+				});
+				image = `${result.secure_url} ${result.public_id}`;
+			}
+			if (req.body.giphy) {
+				image = `Giphy url ${req.body.giphy.url}`;
+			}
+			if (!req.body.giphy && !req.file) {
+				res.status(400).json({
 					status: 'error',
-					error: 'No file attached'
+					error: 'No file selected'
+				});
+			}
+			if (req.body.giphy && req.file) {
+				res.status(400).json({
+					status: 'error',
+					error: 'You should select file from either gif collection or from input field'
+				});
+			}
+
+			let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
+
+			if (gif.rows.length > 0) {
+				const { gifId, createdOn, title, imageUrl } = gif.rows[0];
+				return res.status(201).json({
+					status: 'success',
+					data: {
+						message: 'Gif successfully posted',
+						gifId,
+						createdOn,
+						title,
+						imageUrl
+					}
 				});
 			}
 		} catch (error) {
