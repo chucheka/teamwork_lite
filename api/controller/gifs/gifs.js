@@ -84,8 +84,8 @@ class gifController {
 				});
 				image = `${result.secure_url} ${result.public_id}`;
 			}
-			if (req.body.giphy) {
-				image = `Giphy url ${req.body.giphy.url}`;
+			if (req.body.giphyUrl) {
+				image = `${req.body.giphyUrl} ${req.body.giphyUrl}`;
 			}
 			// if (!req.body.giphy && !req.file) {
 			// 	return res.status(400).json({
