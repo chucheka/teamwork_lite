@@ -83,9 +83,39 @@ class gifController {
 					unique_filename: true
 				});
 				image = `${result.secure_url} ${result.public_id}`;
+				let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
+
+				if (gif.rows.length > 0) {
+					const { gifId, createdOn, title, imageUrl } = gif.rows[0];
+					return res.status(201).json({
+						status: 'success',
+						data: {
+							message: 'Gif successfully posted',
+							gifId,
+							createdOn,
+							title,
+							imageUrl
+						}
+					});
+				}
 			}
 			if (req.body.giphyUrl) {
 				image = `${req.body.giphyUrl} ${req.body.giphyUrl}`;
+				let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
+
+				if (gif.rows.length > 0) {
+					const { gifId, createdOn, title, imageUrl } = gif.rows[0];
+					return res.status(201).json({
+						status: 'success',
+						data: {
+							message: 'Gif successfully posted',
+							gifId,
+							createdOn,
+							title,
+							imageUrl
+						}
+					});
+				}
 			}
 			// if (!req.body.giphy && !req.file) {
 			// 	return res.status(400).json({
@@ -99,22 +129,6 @@ class gifController {
 			// 		error: 'You should select file from either gif collection'
 			// 	});
 			// }
-
-			let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
-
-			if (gif.rows.length > 0) {
-				const { gifId, createdOn, title, imageUrl } = gif.rows[0];
-				return res.status(201).json({
-					status: 'success',
-					data: {
-						message: 'Gif successfully posted',
-						gifId,
-						createdOn,
-						title,
-						imageUrl
-					}
-				});
-			}
 		} catch (error) {
 			return res.status(500).json({
 				status: 'error',
