@@ -86,7 +86,7 @@ class gifController {
 					image = `${result.secure_url} ${result.public_id}`;
 				}
 				if (req.body.giphy) {
-					image = `${result.secure_url} ${res.body.giphy.url}`;
+					image = `Giphy url ${req.body.giphy.url}`;
 				}
 
 				let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
