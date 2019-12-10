@@ -87,18 +87,18 @@ class gifController {
 			if (req.body.giphy) {
 				image = `Giphy url ${req.body.giphy.url}`;
 			}
-			if (!req.body.giphy && !req.file) {
-				res.status(400).json({
-					status: 'error',
-					error: 'No file selected'
-				});
-			}
-			if (req.body.giphy && req.file) {
-				res.status(400).json({
-					status: 'error',
-					error: 'You should select file from either gif collection or from input field'
-				});
-			}
+			// if (!req.body.giphy && !req.file) {
+			// 	return res.status(400).json({
+			// 		status: 'error',
+			// 		error: 'No file selected'
+			// 	});
+			// }
+			// if (!req.body.giphy && !req.file) {
+			// 	return res.status(400).json({
+			// 		status: 'error',
+			// 		error: 'You should select file from either gif collection'
+			// 	});
+			// }
 
 			let gif = await pool.query(createGifsQuery.createGif, [ title, image ]);
 
