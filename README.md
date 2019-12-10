@@ -14,6 +14,9 @@ https://teamwork-lite.herokuapp.com
 ## API Documentation
 https://teamwork-lite.herokuapp.com/api-docs/
 
+## UI On gh-pages
+https://ucheka22.github.io/teamwork_UI/
+
 ## Table of Content
  * [Getting Started](#getting-started)
 
